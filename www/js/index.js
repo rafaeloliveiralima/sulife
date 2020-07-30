@@ -23,7 +23,7 @@ var app = {
             if (hasPermission) {
 				var number = '+5521980327479' /* iOS: ensure number is actually a string */
 				var message = 'TESTE DE ENVIO DE SMS';
-				console.log("number=" + number + ", message= " + message);
+				alert("number=" + number + ", message= " + message);
 		 
 				//CONFIGURATION
 				var options = {
@@ -40,6 +40,7 @@ var app = {
 				//sms.send(...);
             }
             else {
+				alert('sem permissao');
                 // show a helpful message to explain why you need to require the permission to send a SMS
                 // read http://developer.android.com/training/permissions/requesting.html#explain for more best practices
             }
@@ -51,9 +52,9 @@ var app = {
         var success = function (hasPermission) { 
             if (!hasPermission) {
                 sms.requestPermission(function() {
-                    console.log('[OK] Permission accepted')
+                    alert('[OK] Permission accepted')
                 }, function(error) {
-                    console.info('[WARN] Permission not accepted')
+                    alert('[WARN] Permission not accepted')
                     // Handle permission not accepted
                 })
             }
@@ -66,6 +67,7 @@ var app = {
 		alert('1');
         this.bindEvents();
 		this.checkSMSPermission();
+		alert('2');
     },
     // Bind Event Listeners
     //
