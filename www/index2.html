@@ -137,22 +137,22 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li> 
-							<a class="waves-effect waves-dark" href="index.html" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Home</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('home')" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Home</span></a>
                         </li>
                         <li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Residence</span></a>
                             <ul aria-expanded="false" class="collapse">
-								<li><a href="maintainance.html">Maintainance</a></li>
-                                <li><a href="followups.html">Follow ups</a></li>
-                                <li><a href="events.html">Events</a></li>
-                                <li><a href="gallary.html">Gallary</a></li>
-                                <li><a href="contactinfo.html">Contact Info</a></li>
+								<li><a onclick="getPage('maintainance')">Maintainance</a></li>
+                                <li><a onclick="getPage('followups')">Follow ups</a></li>
+                                <li><a onclick="getPage('event')">Events</a></li>
+                                <li><a onclick="getPage('gallery')">Gallery</a></li>
+                                <li><a onclick="getPage('contactinfo')">Contact Info</a></li>
                             </ul>
 						</li>
                         <li> 
 							<a class="waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Time Table</span></a>
-							<a class="waves-effect waves-dark" href="calendar.html" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Calendar</span></a>
-							<a class="waves-effect waves-dark" href="emergencycontact.html" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Emergency Contact</span></a>
-							<a class="waves-effect waves-dark" href="settings.html" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Settings</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('calendar')" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Calendar</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('emergencycontact')" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Emergency Contact</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('settings')" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Settings</span></a>
 							<a class="waves-effect waves-dark" href="login.html" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Log off</span></a>
                         </li>
                     </ul>
@@ -167,42 +167,8 @@
         <!-- ============================================================== -->
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
-        <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <section id="wrapper" class="login-register login-sidebar" style="width:100%;heigth:700px;padding:0px">
-        <div class="login-box card" style="width:100%;height:700px;margin:0px 0px 0px 0px;background-image: url('img/efc60c3daad23d30f587f875d580e784.png')">
-                <form class="form-horizontal form-material" id="loginform" action="maps.html"  style="margin:0">
-                    <!--<a href="javascript:void(0)" class="text-center db"><img src="assets/images/logo-icon.png" alt="Home" /><br/><img src="assets/images/logo-text.png" alt="Home" /></a>-->
-                    <div class="form-group m-t-40" style="padding:10px">
-                        <div class="col-xs-12">
-                            <label class="custom-control-label" for="customCheck1" style='padding:5px 5px 5px 5px;width:100%;color: white;background-color:#61233C'>SU FACILITY</label>
-                            <div class="input-group mb-3">
-													<input type="text" class="form-control" style='color: black;background-color:white' placeholder="" aria-label="" aria-describedby="basic-addon1">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-info" type="submit">Go!</button>
-                                                    </div>
-                                                </div>
-                        </div>
-                    </div>
-                   <br>
-				   <br>
-				   <br>
-				 </form>
-                    <div class="form-group text-center m-t-20">
-                        <div class="col-xs-12">
-                            <button onclick='start()' class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" style='background-color:#61233C;' type="button">PANIC</button>
-                        <div id='seconds-counter'></div>
-						</div>
-                    </div>
-                
-        </div>
-    </section>
-
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
+        <div class="page-wrapper" id='page_index'>
+            
         </div>
         <!-- ============================================================== -->
         <!-- End Page wrapper  -->
@@ -257,7 +223,73 @@
 	
 	<script type="text/javascript">
         
-		var seconds = 0;
+	$(document).ready(function(){
+		$("#page_index").load("page_index.html");
+	});	
+	
+	function fechaMenu()
+	{
+		$("body").toggleClass("show-sidebar");
+        $(".nav-toggler i").toggleClass("ti-menu");
+        $(".nav-toggler i").addClass("ti-close");
+	}
+	
+	function getPage(p)
+	{
+		if (p=='home')
+		{
+			$("#page_index").load("page_index.html");
+			fechaMenu();
+		}
+		if (p=='contactinfo')
+		{
+			$("#page_index").load("page_contactinfo.html");
+			fechaMenu();
+		}
+		if (p=='gallery')
+		{
+			$("#page_index").load("page_gallery.html");
+			fechaMenu();
+		}
+		if (p=='event')
+		{
+			$("#page_index").load("page_event.html");
+			fechaMenu();
+		}
+		if (p=='followups')
+		{
+			$("#page_index").load("page_followups.html");
+			fechaMenu();
+		}
+		if (p=='maintainance')
+		{
+			$("#page_index").load("page_maintainance.html");
+			fechaMenu();
+		}
+		if (p=='settings')
+		{
+			$("#page_index").load("page_settings.html");
+			fechaMenu();
+		}		
+		if (p=='emergencycontact')
+		{
+			$("#page_index").load("page_emergencycontact.html");
+			fechaMenu();
+		}
+		if (p=='calendar')
+		{
+			$("#page_index").load("page_calendar.html");
+			fechaMenu();
+		}
+		if (p=='newemergencycontact')
+		{
+			$("#page_index").load("page_newemergencycontact.html");
+		}
+		
+//		$(".test")
+	}
+		
+		/*var seconds = 0;
 		var panic = false;
 		var el = document.getElementById('seconds-counter');
 		cancel = setInterval(incrementSeconds, 1000);
@@ -296,7 +328,7 @@
 		}
 
 		//var cancel = setInterval(incrementSeconds, 1000);
-		
+		*/
     </script>
 </body>
 
