@@ -102,10 +102,10 @@
                     <ul class="navbar-nav my-lg-0">
                         
                         <li class="nav-item dropdown u-pro">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class=""> <span class="hidden-md-down">Mark &nbsp;<i class="fa fa-angle-down"></i></span> </a>
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class=""> <span class="hidden-md-down"><i class="fa fa-angle-down"></i></span> </a>
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <!-- text-->
-                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
+                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile (<span id='div_name'></span>)</a>
                                 <!-- text-->
                                 <div class="dropdown-divider"></div>
                                 <!-- text-->
@@ -203,7 +203,32 @@
         
 	$(document).ready(function(){
 		$("#page_index").load("page_index.html");
+		document.getElementById('div_name').innerHTML=window.localStorage.getItem("name");
 	});	
+	
+	function getGalery()
+	{
+		$.post("http://tempustecnologia.com/sulife/controller/exec.gallery.php",
+		{
+		  op: "LISTAPP",
+		  iduser: window.localStorage.getItem("name")
+		},
+		function(data,status){
+			$("#div_gallery").html(data); 
+		});
+	}
+	
+	function getEvent()
+	{
+		$.post("http://tempustecnologia.com/sulife/controller/exec.event.php",
+		{
+		  op: "LISTAPP",
+		  iduser: window.localStorage.getItem("name")
+		},
+		function(data,status){
+			$("#div_event").html(data); 
+		});
+	}
 	
 	function fechaMenu()
 	{
@@ -228,11 +253,13 @@
 		{
 			$("#page_index").load("page_gallery.html");
 			fechaMenu();
+			getGalery();
 		}
 		if (p=='event')
 		{
 			$("#page_index").load("page_event.html");
 			fechaMenu();
+			getEvent();
 		}
 		if (p=='followups')
 		{
