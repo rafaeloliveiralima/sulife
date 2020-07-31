@@ -200,8 +200,16 @@
 			  edtpassword: document.getElementById('edtpassword').value
 			},
 			function(data,status){
-				if (data.trim()=='OK')
+				var res = data.split("|");
+				iduser = res[0];
+				name = res[1];
+				studentnumber = res[2];
+			
+				if (data.trim()!='ERRO')
 				{
+					window.localStorage.setItem("iduser", iduser);
+					window.localStorage.setItem("name",name);
+					window.localStorage.setItem("studentnumber",studentnumber);
 					window.location.href = 'index2.html';
 				}
 				else
