@@ -200,12 +200,23 @@
     <script src="assets/node_modules/gmaps/jquery.gmaps.js"></script>	
 	
 	<script type="text/javascript">
-        
+    
+	let map, infoWindow;
+	
 	$(document).ready(function(){
 		$("#page_index").load("page_index.html");
 		document.getElementById('div_name').innerHTML=window.localStorage.getItem("name");
 	});	
 	
+	function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+		  infoWindow.setPosition(pos);
+		  infoWindow.setContent(
+			browserHasGeolocation
+			  ? "Error: The Geolocation service failed."
+			  : "Error: Your browser doesn't support geolocation."
+		  );
+		infoWindow.open(map);
+	}
 	function getGalery()
 	{
 		$.post("http://tempustecnologia.com/sulife/controller/exec.gallery.php",
@@ -217,6 +228,18 @@
 			$("#div_gallery").html(data); 
 		});
 	}
+	function getResidenceContactInfo()
+	{
+		$.post("http://tempustecnologia.com/sulife/view/residencecontactinfo.php",
+		{
+		  op: "C",
+		  idresidence: window.localStorage.getItem("idresidence")
+		},
+		function(data,status){
+			$("#div_residencecontactinfor").html(data); 
+		});
+	}
+
 	
 	function getEvent()
 	{
@@ -244,9 +267,96 @@
 			$("#page_index").load("page_index.html");
 			fechaMenu();
 		}
+		
+		
+		if (p=='map')
+		{
+			$("#page_index").load("page_maps.html", function( response, status, xhr ) {
+  if ( status == "error" ) {
+    var msg = "Sorry but there was an error: ";
+    $( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+  }
+  if (status == "success")
+  {
+	 map = new google.maps.Map(document.getElementById("gmaps-simple"), {
+    center: { lat: -34.397, lng: 150.644 },
+    zoom: 6
+  });
+/*  infoWindow = new google.maps.InfoWindow();
+			map = new GMaps({
+				el: '#gmaps-simple',
+				lat: -33.9329023,
+				lng: 18.8569261,
+				zoom : 10,
+				panControl : false,
+				streetViewControl : true,
+				mapTypeControl: true,
+				overviewMapControl: false
+			  });
+			   map.addMarker({
+				lat: -33.9329023,
+				lng: 18.8569261,
+				title: 'Marker with InfoWindow',
+				infoWindow: {
+				  content: '<p>Your Content</p>'
+				}
+			  });  
+*/			  
+infoWindow = new google.maps.InfoWindow();
+
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        infoWindow.setPosition(pos);
+        infoWindow.setContent("Location found.");
+        infoWindow.open(map);
+        map.setCenter(pos);
+      },
+      () => {
+        handleLocationError(true, infoWindow, map.getCenter());
+      }
+    );
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }			  
+			  
+  
+  
+  
+  }
+});
+
+/*			 map = new GMaps({
+				el: '#gmaps-simple',
+				lat: -33.9329023,
+				lng: 18.8569261,
+				zoom : 10,
+				panControl : false,
+				streetViewControl : true,
+				mapTypeControl: true,
+				overviewMapControl: false
+			  });
+			   map.addMarker({
+				lat: -33.9329023,
+				lng: 18.8569261,
+				title: 'Marker with InfoWindow',
+				infoWindow: {
+				  content: '<p>Your Content</p>'
+				}
+			  });
+			  */
+			//fechaMenu();
+		}
 		if (p=='contactinfo')
 		{
 			$("#page_index").load("page_contactinfo.html");
+			getResidenceContactInfo();
 			fechaMenu();
 		}
 		if (p=='gallery')
@@ -291,49 +401,100 @@
 			$("#page_index").load("page_newemergencycontact.html");
 		}
 		
+		
+		
+		
 //		$(".test")
 	}
 		
-		/*var seconds = 0;
+		var seconds = 6;
 		var panic = false;
-		var el = document.getElementById('seconds-counter');
-		cancel = setInterval(incrementSeconds, 1000);
+		
+		var element =  document.getElementById('btncounter');
+		if (typeof(element) != 'undefined')
+		{
+			// Exists.
+			//cancel = setInterval(decrementSeconds, 1000);
+		}
+		
 
+		function restoreState()
+		{
+				seconds = 6;
+				panic = false;
+				document.getElementById("btncounter").style.background = "#61233C";
+				document.getElementById("btncounter").innerHTML = "PANIC";
+				document.getElementById('seconds-counter').innerText = "";
+				clearInterval(cancel);
+		}
+		
+		
 		function start()
 		{
 			panic = !panic;
 			if (panic==false)
 			{
 				clearInterval(cancel);
+				restoreState();
+				document.getElementById('div_alert_panic').innerHTML = '';
 			}
 			else
 			{
+				cancel = setInterval(decrementSeconds, 1000);
+				document.getElementById("btncounter").innerHTML = "CANCEL";
+				document.getElementById("btncounter").style.background = "green";
+				//document.getElementById("btncounter").className = "btn btn-info btn-lg btn-block text-uppercase btn-rounded";
 				//cancel = setInterval(incrementSeconds, 1000);
-				incrementSeconds();
+				decrementSeconds();
 			}
 		}
 		
 		
-		function incrementSeconds() {
-		
+		function decrementSeconds() {
+			//var el = document.getElementById('seconds-counter');
 			if (panic==true)
 			{
-				seconds += 1;
+				seconds -= 1;
 			}
 			else
 			{
-				seconds = 0;
+				seconds = 6;
 			}
-			el.innerText = "You have been here for " + seconds + " seconds.";
-			
-			if (seconds==6)
+			//el.innerText = "You have been here for " + seconds + " seconds.";
+			if (seconds<6)
 			{
-				alert('Mensagem enviada');
+				document.getElementById('seconds-counter').innerHTML = " "+ seconds + "<br><br><br>";
+			}
+			else
+			{
+				document.getElementById('seconds-counter').innerHTML = '';
+			}
+			if (seconds<0)
+			{
+				$.post("http://tempustecnologia.com/sulife/controller/exec.panic.php",
+				{
+				  op: "IAPP",
+				  iduser: window.localStorage.getItem("iduser"),
+				  lat: -33.9329023,
+				  lng: 18.8569261
+				},
+				function(data,status){
+					alert(data);
+					if (data.trim()!='OK')
+					{
+						document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Campus Security has NOT been notified.</div>';
+					}
+					else
+					{
+						document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> Campus Security has been notified.</div>';
+					}
+				});			
+				restoreState();
 			}
 		}
 
 		//var cancel = setInterval(incrementSeconds, 1000);
-		*/
+		
     </script>
 </body>
 

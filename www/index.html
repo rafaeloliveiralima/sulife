@@ -204,12 +204,13 @@
 				iduser = res[0];
 				name = res[1];
 				studentnumber = res[2];
+				idresidence = res[3];
 			
 				if (data.trim()!='ERRO')
 				{
 					window.localStorage.setItem("iduser", iduser);
 					window.localStorage.setItem("name",name);
-					window.localStorage.setItem("studentnumber",studentnumber);
+					window.localStorage.setItem("idresidence",idresidence);
 					window.location.href = 'index2.html';
 				}
 				else
