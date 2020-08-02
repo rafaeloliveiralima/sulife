@@ -196,7 +196,10 @@
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
         app.initialize();	
-
+		function alertDismissed()
+		{
+		}
+		
 		$(document).ready(function(){
 		  $("#btnenviar").click(function(){
 			$.post("http://tempustecnologia.com/sulife/controller/exec.register.php",
@@ -214,6 +217,7 @@
 			
 				if (data.trim()!='ERRO')
 				{
+					
 					window.localStorage.setItem("iduser", iduser);
 					window.localStorage.setItem("name",name);
 					window.localStorage.setItem("idresidence",idresidence);
@@ -221,7 +225,12 @@
 				}
 				else
 				{
-					alert('Login inválido');
+					navigator.notification.alert(
+						'Não foi possível efetuar o login.',  // message
+						alertDismissed,         // callback
+						'Warning',            // title
+						'OK'                  // buttonName
+					);				
 				}
 			});
 		  });
@@ -241,12 +250,23 @@
 			function(data,status){
 				if (data.trim()=='OK')
 				{
+					navigator.notification.alert(
+						'Cadastrado com sucesso.',  // message
+						alertDismissed,         // callback
+						'Success',            // title
+						'OK'                  // buttonName
+					);	
 					$("#wrapper2").slideUp();
 					$("#wrapper").fadeIn();
 				}
 				else
 				{
-					alert('Login inválido');
+					navigator.notification.alert(
+						'Não foi possível realizar o registro.',  // message
+						alertDismissed,         // callback
+						'Error',            // title
+						'OK'                  // buttonName
+					);	
 				}
 			});
 		  });

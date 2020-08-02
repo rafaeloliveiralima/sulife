@@ -107,7 +107,7 @@
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <!-- text-->
                                 <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile (<span id='div_name'></span>)</a>
-                                <a onclick="getPage('settings')" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
+                                <a onclick="getPage('settings',false)" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
                                 <div class="dropdown-divider"></div>
                                 <a href="index.html" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                                 <!-- text-->
@@ -133,22 +133,22 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li> 
-							<a class="waves-effect waves-dark" onclick="getPage('home')" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Home</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('home',true)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Home</span></a>
                         </li>
                         <li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Residence</span></a>
                             <ul aria-expanded="false" class="collapse">
-								<li><a onclick="getPage('maintenance')">Maintenance</a></li>
-                                <li><a onclick="getPage('followups')">Follow ups</a></li>
-                                <li><a onclick="getPage('event')">Events</a></li>
-                                <li><a onclick="getPage('gallery')">Gallery</a></li>
-                                <li><a onclick="getPage('contactinfo')">Contact Info</a></li>
+								<li><a onclick="getPage('maintenance',true)">Maintenance</a></li>
+                                <li><a onclick="getPage('followups',true)">Follow ups</a></li>
+                                <li><a onclick="getPage('event',true)">Events</a></li>
+                                <li><a onclick="getPage('gallery',true)">Gallery</a></li>
+                                <li><a onclick="getPage('contactinfo',true)">Contact Info</a></li>
                             </ul>
 						</li>
                         <li>
-							<a class="waves-effect waves-dark" onclick="getPage('timetable')" aria-expanded="false"><i class="ti-alarm-clock"></i><span class="hide-menu">Time Table</span></a>
-							<a class="waves-effect waves-dark" onclick="getPage('calendar')" aria-expanded="false"><i class="ti-calendar"></i><span class="hide-menu">Calendar</span></a>
-							<a class="waves-effect waves-dark" onclick="getPage('emergencycontact')" aria-expanded="false"><i class="fa fa-address-card-o"></i><span class="hide-menu">Emergency Contact</span></a>
-							<a class="waves-effect waves-dark" onclick="getPage('settings')" aria-expanded="false"><i class="ti-settings"></i><span class="hide-menu">Settings</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('timetable',true)" aria-expanded="false"><i class="ti-alarm-clock"></i><span class="hide-menu">Time Table</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('calendar',true)" aria-expanded="false"><i class="ti-calendar"></i><span class="hide-menu">Calendar</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('emergencycontact',true)" aria-expanded="false"><i class="fa fa-address-card-o"></i><span class="hide-menu">Emergency Contact</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('settings',true)" aria-expanded="false"><i class="ti-settings"></i><span class="hide-menu">Settings</span></a>
 							<a class="waves-effect waves-dark" href="index.html" aria-expanded="false"><i class="fa fa-power-off"></i><span class="hide-menu">Log off</span></a>
                         </li>
                     </ul>
@@ -158,7 +158,7 @@
             <!-- End Sidebar scroll-->
         </aside>
 		
-       
+        
         <div class="page-wrapper" id='page_index'>
             
         </div>
@@ -205,14 +205,19 @@
     <script src="assets/node_modules/calendar/jquery-ui.min.js"></script>
     <script src="assets/node_modules/moment/moment.js"></script>
     <script src='assets/node_modules/calendar/dist/fullcalendar.min.js'></script>
-	
+
+	<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">
-    
+    function alertDismissed()
+	{
+	}
 	let map, infoWindow;
 	
 	$(document).ready(function(){
 		$("#page_index").load("page_index.html");
 		document.getElementById('div_name').innerHTML=window.localStorage.getItem("name");
+		
 	});	
 	
 	// botão register em NEW EMERGENCY CONTACT
@@ -231,10 +236,21 @@
 		function(data,status){
 			if (data.trim()=='OK')
 			{
+				navigator.notification.alert(
+						'Cadastrado com sucesso.',  // message
+						alertDismissed,         // callback
+						'Success',            // title
+						'OK'                  // buttonName
+				);	
 			}
 			else
 			{
-				alert('Não adicionado');
+				navigator.notification.alert(
+						'Não foi possível cadastrar.',  // message
+						alertDismissed,         // callback
+						'error',            // title
+						'OK'                  // buttonName
+				);				
 			}
 		});
 	};
@@ -252,13 +268,22 @@
 		function(data,status){
 			if (data.trim()=='OK')
 			{
-				//
-				// Após incluir listo os problemas gravados
-				getPage('followups');
+				navigator.notification.alert(
+						'Cadastrado com sucesso.',  // message
+						alertDismissed,         // callback
+						'Success',            // title
+						'OK'                  // buttonName
+				);	
+				getPage('followups',false);
 			}
 			else
 			{
-				alert('Não adicionado');
+				navigator.notification.alert(
+						'Não foi possível cadastrar.',  // message
+						alertDismissed,         // callback
+						'error',            // title
+						'OK'                  // buttonName
+				);				
 			}
 		});
 	};
@@ -278,10 +303,22 @@
 		function(data,status){
 			if (data.trim()=='OK')
 			{
+				navigator.notification.alert(
+						'Alterado com sucesso.',  // message
+						alertDismissed,         // callback
+						'Success',            // title
+						'OK'                  // buttonName
+				);	
+				//mensagem('success','Cadastrado com sucesso!');
 			}
 			else
 			{
-				alert('Error');
+				navigator.notification.alert(
+						'Não foi possível alterar.',  // message
+						alertDismissed,         // callback
+						'error',            // title
+						'OK'                  // buttonName
+				);	
 			}
 		});
 	}
@@ -358,6 +395,22 @@
 		});
 	}
 	
+	function mensagem(tipo,m)
+	{
+		/*if (tipo=='success')
+		{
+			document.getElementById('div_mensagem').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> '+m+'</div>';
+		}
+		if (tipo=='warning')
+		{
+			document.getElementById('div_mensagem').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> '+m+'</div>';
+		}
+		if (tipo=='error')
+		{
+			document.getElementById('div_mensagem').innerHTML = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-error"><i class="fa fa-check-circle"></i> Error</h3> '+m+'</div>';
+		}
+		*/
+	}
 	// delete
 	
 	function deleteEmergencyContact(id)
@@ -370,27 +423,52 @@
 		function(data,status){
 			if (data.trim()=='OK')
 			{
+				navigator.notification.alert(
+					'Excluído com sucesso.',  // message
+					alertDismissed,         // callback
+					'Success',            // title
+					'OK'                  // buttonName
+				);
+				getPage('emergencycontact',false);
+				
 			}
 			else
 			{
-				alert('ERROR');
+				navigator.notification.alert(
+				'Não foi possível excluir.',  // message
+						alertDismissed,         // callback
+						'Warning',            // title
+						'OK'                  // buttonName
+				);	
 			}
 		});
 	}
 	
-	function fechaMenu()
+	function fechaMenu(closemenu)
 	{
-		$("body").toggleClass("show-sidebar");
-        $(".nav-toggler i").toggleClass("ti-menu");
-        $(".nav-toggler i").addClass("ti-close");
+		if (closemenu)
+		{
+			$("body").toggleClass("show-sidebar");
+			$(".nav-toggler i").toggleClass("ti-menu");
+			$(".nav-toggler i").addClass("ti-close");
+		}
 	}
 	
-	function getPage(p)
+	function getPage(p,closemenu)
 	{
 		if (p=='home')
 		{
-			$("#page_index").load("page_index.html");
-			fechaMenu();
+			$("#page_index").load("page_index.html", function( response, status, xhr ) {
+				fechaMenu(closemenu);
+				if ( status == "error" ) {
+					var msg = "Sorry but there was an error: ";
+					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+				}
+				if (status == "success")
+				{
+				
+				}
+			});
 		}
 		if (p=='map')
 		{
@@ -554,24 +632,24 @@
 		{
 			$("#page_index").load("page_contactinfo.html");
 			getResidenceContactInfo();
-			fechaMenu();
+			fechaMenu(closemenu);
 		}
 		if (p=='gallery')
 		{
 			$("#page_index").load("page_gallery.html");
-			fechaMenu();
+			fechaMenu(closemenu);
 			getGalery();
 		}
 		if (p=='event')
 		{
 			$("#page_index").load("page_event.html");
-			fechaMenu();
+			fechaMenu(closemenu);
 			getEvent();
 		}
 		if (p=='followups')
 		{
 			$("#page_index").load("page_followups.html", function( response, status, xhr ) {
-				fechaMenu();
+				fechaMenu(closemenu);
 				if ( status == "error" ) {
 					var msg = "Sorry but there was an error: ";
 					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
@@ -587,12 +665,12 @@
 		if (p=='maintenance')
 		{
 			$("#page_index").load("page_maintenance.html");
-			fechaMenu();
+			fechaMenu(closemenu);
 		}
 		if (p=='settings')
 		{
 			$("#page_index").load("page_settings.html", function( response, status, xhr ) {
-				fechaMenu();
+				fechaMenu(closemenu);
 				if ( status == "error" ) {
 					var msg = "Sorry but there was an error: ";
 					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
@@ -613,7 +691,7 @@
 		if (p=='emergencycontact')
 		{
 			$("#page_index").load("page_emergencycontact.html", function( response, status, xhr ) {
-				fechaMenu();
+				fechaMenu(closemenu);
 				if ( status == "error" ) {
 					var msg = "Sorry but there was an error: ";
 					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
@@ -628,7 +706,7 @@
 		if (p=='timetable')
 		{
 			$("#page_index").load("page_timetable.html", function( response, status, xhr ) {
-				fechaMenu();
+				fechaMenu(closemenu);
 				if ( status == "error" ) {
 					var msg = "Sorry but there was an error: ";
 					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
@@ -643,7 +721,7 @@
 		if (p=='calendar')
 		{
 			$("#page_index").load("page_calendar.html");
-			fechaMenu();
+			fechaMenu(closemenu);
 		}
 
 
