@@ -16,6 +16,7 @@
     <link href="assets/node_modules/morrisjs/morris.css" rel="stylesheet">
     <!--Toaster Popup message CSS -->
     <link href="assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
+	<link href="assets/node_modules/calendar/dist/fullcalendar.css" rel="stylesheet" />
     <!-- Custom CSS -->
 <!--    <link href="dist/css/style.min.css" rel="stylesheet">-->
     <link href="dist/css/style.css" rel="stylesheet">
@@ -106,13 +107,8 @@
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <!-- text-->
                                 <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile (<span id='div_name'></span>)</a>
-                                <!-- text-->
+                                <a onclick="getPage('settings')" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
                                 <div class="dropdown-divider"></div>
-                                <!-- text-->
-                                <a href="settings.html" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
-                                <!-- text-->
-                                <div class="dropdown-divider"></div>
-                                <!-- text-->
                                 <a href="index.html" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                                 <!-- text-->
                             </div>
@@ -141,19 +137,19 @@
                         </li>
                         <li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-home"></i><span class="hide-menu">Residence</span></a>
                             <ul aria-expanded="false" class="collapse">
-								<li><a onclick="getPage('maintainance')">Maintainance</a></li>
+								<li><a onclick="getPage('maintenance')">Maintenance</a></li>
                                 <li><a onclick="getPage('followups')">Follow ups</a></li>
                                 <li><a onclick="getPage('event')">Events</a></li>
                                 <li><a onclick="getPage('gallery')">Gallery</a></li>
                                 <li><a onclick="getPage('contactinfo')">Contact Info</a></li>
                             </ul>
 						</li>
-                        <li> 
-							<a class="waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Time Table</span></a>
-							<a class="waves-effect waves-dark" onclick="getPage('calendar')" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Calendar</span></a>
-							<a class="waves-effect waves-dark" onclick="getPage('emergencycontact')" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Emergency Contact</span></a>
-							<a class="waves-effect waves-dark" onclick="getPage('settings')" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Settings</span></a>
-							<a class="waves-effect waves-dark" href="index.html" aria-expanded="false"><i class="ti-layout-grid2"></i><span class="hide-menu">Log off</span></a>
+                        <li>
+							<a class="waves-effect waves-dark" onclick="getPage('timetable')" aria-expanded="false"><i class="ti-alarm-clock"></i><span class="hide-menu">Time Table</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('calendar')" aria-expanded="false"><i class="ti-calendar"></i><span class="hide-menu">Calendar</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('emergencycontact')" aria-expanded="false"><i class="fa fa-address-card-o"></i><span class="hide-menu">Emergency Contact</span></a>
+							<a class="waves-effect waves-dark" onclick="getPage('settings')" aria-expanded="false"><i class="ti-settings"></i><span class="hide-menu">Settings</span></a>
+							<a class="waves-effect waves-dark" href="index.html" aria-expanded="false"><i class="fa fa-power-off"></i><span class="hide-menu">Log off</span></a>
                         </li>
                     </ul>
                 </nav>
@@ -200,6 +196,15 @@
 <!--    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCUBL-6KdclGJ2a_UpmB2LXvq7VOcPT7K4&sensor=true"></script>-->
     <script src="assets/node_modules/gmaps/gmaps.min.js"></script>
     <script src="assets/node_modules/gmaps/jquery.gmaps.js"></script>	
+
+    <script src="assets/node_modules/calendar/jquery-ui.min.js"></script>
+    <script src="assets/node_modules/moment/moment.js"></script>
+    <script src='assets/node_modules/calendar/dist/fullcalendar.min.js'></script>
+    <script src="js/cal-init.js"></script>
+
+    <script src="assets/node_modules/calendar/jquery-ui.min.js"></script>
+    <script src="assets/node_modules/moment/moment.js"></script>
+    <script src='assets/node_modules/calendar/dist/fullcalendar.min.js'></script>
 	
 	<script type="text/javascript">
     
@@ -210,6 +215,77 @@
 		document.getElementById('div_name').innerHTML=window.localStorage.getItem("name");
 	});	
 	
+	// botão register em NEW EMERGENCY CONTACT
+	function addEmergencyContact()
+	{
+		
+		$.post("http://tempustecnologia.com/sulife/controller/exec.emergencycontact.php",
+		{
+		  op: "IAPP",
+		  iduser:  window.localStorage.getItem("iduser"),
+		  edtname: document.getElementById('edtname').value,
+		  edtsurname: document.getElementById('edtsurname').value,
+		  edtphonenumber: document.getElementById('edtphonenumber').value,
+		  edtrelationship: document.getElementById('edtrelationship').value
+		},
+		function(data,status){
+			if (data.trim()=='OK')
+			{
+			}
+			else
+			{
+				alert('Não adicionado');
+			}
+		});
+	};
+
+	function addMantenance()
+	{
+		
+		$.post("http://tempustecnologia.com/sulife/controller/exec.maintenance.php",
+		{
+		  op: "IAPP",
+		  iduser:  window.localStorage.getItem("iduser"),
+		  edtdescription: document.getElementById('edtdescription').value,
+		  edttags: document.getElementById('edttags').value
+		},
+		function(data,status){
+			if (data.trim()=='OK')
+			{
+				//
+				// Após incluir listo os problemas gravados
+				getPage('followups');
+			}
+			else
+			{
+				alert('Não adicionado');
+			}
+		});
+	};
+	
+	function updateSetttings()
+	{
+		$.post("http://tempustecnologia.com/sulife/controller/exec.register.php",
+		{
+		  op: "AAPP",
+		  iduser: window.localStorage.getItem("iduser"),
+		  edtname: document.getElementById('edtname').value,
+		  edtsurname: document.getElementById('edtsurname').value,
+		  edtphonenumber: document.getElementById('edtphonenumber').value,
+		  cmboxresidence: document.getElementById('cmboxresidence').value,
+		  edtgender: document.getElementById('edtgender').value
+		},
+		function(data,status){
+			if (data.trim()=='OK')
+			{
+			}
+			else
+			{
+				alert('Error');
+			}
+		});
+	}
+	
 	function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 		  infoWindow.setPosition(pos);
 		  infoWindow.setContent(
@@ -219,6 +295,7 @@
 		  );
 		infoWindow.open(map);
 	}
+	
 	function getGalery()
 	{
 		$.post("http://tempustecnologia.com/sulife/controller/exec.gallery.php",
@@ -230,6 +307,8 @@
 			$("#div_gallery").html(data); 
 		});
 	}
+	
+	
 	function getResidenceContactInfo()
 	{
 		$.post("http://tempustecnologia.com/sulife/view/residencecontactinfo.php",
@@ -242,6 +321,30 @@
 		});
 	}
 
+	function getMaintenance()
+	{
+		$.post("http://tempustecnologia.com/sulife/view/followups.php",
+		{
+		  op: "C",
+		  iduser: window.localStorage.getItem("iduser")
+		},
+		function(data,status){
+			$("#div_listamaintenance").html(data); 
+		});
+	}
+
+	
+	function getEmergencyContact()
+	{
+		$.post("http://tempustecnologia.com/sulife/view/emergencycontact.php",
+		{
+		  op: "C",
+		  iduser: window.localStorage.getItem("iduser")
+		},
+		function(data,status){
+			$("#div_listaemergencycontact").html(data); 
+		});
+	}
 	
 	function getEvent()
 	{
@@ -252,6 +355,26 @@
 		},
 		function(data,status){
 			$("#div_event").html(data); 
+		});
+	}
+	
+	// delete
+	
+	function deleteEmergencyContact(id)
+	{
+		$.post("http://tempustecnologia.com/sulife/controller/exec.emergencycontact.php",
+		{
+		  op: "E",
+		  idemergencycontact: id
+		},
+		function(data,status){
+			if (data.trim()=='OK')
+			{
+			}
+			else
+			{
+				alert('ERROR');
+			}
 		});
 	}
 	
@@ -269,10 +392,9 @@
 			$("#page_index").load("page_index.html");
 			fechaMenu();
 		}
-		
-		
 		if (p=='map')
 		{
+			var busca = document.getElementById('edtsearch').value;
 			$("#page_index").load("page_maps.html", function( response, status, xhr ) {
 			  if ( status == "error" ) {
 				var msg = "Sorry but there was an error: ";
@@ -280,19 +402,20 @@
 			  }
 			  if (status == "success")
 			  {
-				 map = new google.maps.Map(document.getElementById("gmaps-simple"), {
-				center: { lat: -33.9329023, lng: 18.8569261 },
-				zoom: 15
-			  });
+				map = new google.maps.Map(document.getElementById("gmaps-simple"), {
+					center: { lat: -33.9329023, lng: 18.8569261 },
+					zoom: 15
+				});
   
   
-			  const input = document.getElementById("pac-input");
-			  const searchBox = new google.maps.places.SearchBox(input);
-			  map.controls[google.maps.ControlPosition.LEFT_TOP].push(input);
-			  // Bias the SearchBox results towards current map's viewport.
-			  map.addListener("bounds_changed", () => {
-				searchBox.setBounds(map.getBounds());
-			  });
+				  const input = document.getElementById("pac-input");
+				  input.value=busca;
+				  const searchBox = new google.maps.places.SearchBox(input);
+				  map.controls[google.maps.ControlPosition.LEFT_TOP].push(input);
+				  // Bias the SearchBox results towards current map's viewport.
+				  map.addListener("bounds_changed", () => {
+					searchBox.setBounds(map.getBounds());
+				  });
 		  
 				let markers = [];
 				  // Listen for the event fired when the user selects a prediction and retrieve
@@ -310,26 +433,26 @@
 				markers = [];
 				// For each place, get the icon, name and location.
 				const bounds = new google.maps.LatLngBounds();
-			places.forEach(place => {
-			  if (!place.geometry) {
-				console.log("Returned place contains no geometry");
-				return;
-			  }
-			  const icon = {
-				url: place.icon,
-				size: new google.maps.Size(71, 71),
-				origin: new google.maps.Point(0, 0),
-				anchor: new google.maps.Point(17, 34),
-				scaledSize: new google.maps.Size(25, 25)
-			  };
-			  // Create a marker for each place.
-			  markers.push(
-				new google.maps.Marker({
-				  map,
-				  icon,
-				  title: place.name,
-				  position: place.geometry.location
-				})
+				places.forEach(place => {
+				  if (!place.geometry) {
+					console.log("Returned place contains no geometry");
+					return;
+				  }
+				  const icon = {
+					url: place.icon,
+					size: new google.maps.Size(71, 71),
+					origin: new google.maps.Point(0, 0),
+					anchor: new google.maps.Point(17, 34),
+					scaledSize: new google.maps.Size(25, 25)
+				  };
+				  // Create a marker for each place.
+				  markers.push(
+					new google.maps.Marker({
+					  map,
+					  icon,
+					  title: place.name,
+					  position: place.geometry.location
+					})
 			  );
 
 				  if (place.geometry.viewport) {
@@ -340,70 +463,71 @@
 				  }
 				});
 				map.fitBounds(bounds);
+				input.focus();
 			});  
   
   
-/*  infoWindow = new google.maps.InfoWindow();
-			map = new GMaps({
-				el: '#gmaps-simple',
-				lat: -33.9329023,
-				lng: 18.8569261,
-				zoom : 10,
-				panControl : false,
-				streetViewControl : true,
-				mapTypeControl: true,
-				overviewMapControl: false
-			  });
-			   map.addMarker({
-				lat: -33.9329023,
-				lng: 18.8569261,
-				title: 'Marker with InfoWindow',
-				infoWindow: {
-				  content: '<p>Your Content</p>'
-				}
-			  });  
-*/			  
-infoWindow = new google.maps.InfoWindow();
+			/*  infoWindow = new google.maps.InfoWindow();
+						map = new GMaps({
+							el: '#gmaps-simple',
+							lat: -33.9329023,
+							lng: 18.8569261,
+							zoom : 10,
+							panControl : false,
+							streetViewControl : true,
+							mapTypeControl: true,
+							overviewMapControl: false
+						  });
+						   map.addMarker({
+							lat: -33.9329023,
+							lng: 18.8569261,
+							title: 'Marker with InfoWindow',
+							infoWindow: {
+							  content: '<p>Your Content</p>'
+							}
+						  });  
+			*/			  
+			infoWindow = new google.maps.InfoWindow();
 
-  // Try HTML5 geolocation.
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        //infoWindow.setPosition(pos);
-        //infoWindow.setContent("Location found.");
-        //infoWindow.open(map);
-        map.setCenter(pos);
-		map.addMarker({
-				lat: position.coords.latitude,
-				lng: position.coords.longitude,
-				title: 'My Position',
-				infoWindow: {
-				  content: '<p>My Position</p>'
-				}
-			  }); 
-      },
-      () => {
-        handleLocationError(true, infoWindow, map.getCenter());
-      }
-	  
-    );
-	
-	
-	
-  } else {
-    // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
-  }			  
+			  // Try HTML5 geolocation.
+			  if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(
+				  position => {
+					const pos = {
+					  lat: position.coords.latitude,
+					  lng: position.coords.longitude
+					};
+					//infoWindow.setPosition(pos);
+					//infoWindow.setContent("Location found.");
+					//infoWindow.open(map);
+					map.setCenter(pos);
+					map.addMarker({
+							lat: position.coords.latitude,
+							lng: position.coords.longitude,
+							title: 'My Position',
+							infoWindow: {
+							  content: '<p>My Position</p>'
+							}
+						  }); 
+				  },
+				  () => {
+					handleLocationError(true, infoWindow, map.getCenter());
+				  }
+				  
+				);
+				
+				
+				
+			  } else {
+				// Browser doesn't support Geolocation
+				handleLocationError(false, infoWindow, map.getCenter());
+			  }			  
+						  
 			  
-  
-  
-  
-  }
-});
+			  
+			  
+			  } 
+			});
 
 /*			 map = new GMaps({
 				el: '#gmaps-simple',
@@ -446,38 +570,87 @@ infoWindow = new google.maps.InfoWindow();
 		}
 		if (p=='followups')
 		{
-			$("#page_index").load("page_followups.html");
-			fechaMenu();
+			$("#page_index").load("page_followups.html", function( response, status, xhr ) {
+				fechaMenu();
+				if ( status == "error" ) {
+					var msg = "Sorry but there was an error: ";
+					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+				}
+				if (status == "success")
+				{
+					getMaintenance()
+				}
+			});
+			
+			
 		}
-		if (p=='maintainance')
+		if (p=='maintenance')
 		{
-			$("#page_index").load("page_maintainance.html");
+			$("#page_index").load("page_maintenance.html");
 			fechaMenu();
 		}
 		if (p=='settings')
 		{
-			$("#page_index").load("page_settings.html");
-			fechaMenu();
+			$("#page_index").load("page_settings.html", function( response, status, xhr ) {
+				fechaMenu();
+				if ( status == "error" ) {
+					var msg = "Sorry but there was an error: ";
+					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+				}
+				if (status == "success")
+				{
+					$.post("http://tempustecnologia.com/sulife/controller/exec.residence.php",
+					{
+						op: "LISTAPP",
+						idresidence: document.getElementById('cmboxresidence').value
+					},
+					function(data,status){
+						$("#div_residence").html(data); 
+					});
+				}
+			});
 		}		
 		if (p=='emergencycontact')
 		{
-			$("#page_index").load("page_emergencycontact.html");
-			fechaMenu();
+			$("#page_index").load("page_emergencycontact.html", function( response, status, xhr ) {
+				fechaMenu();
+				if ( status == "error" ) {
+					var msg = "Sorry but there was an error: ";
+					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+				}
+				if (status == "success")
+				{
+					getEmergencyContact();
+				}
+			});
 		}
+		
+		if (p=='timetable')
+		{
+			$("#page_index").load("page_timetable.html", function( response, status, xhr ) {
+				fechaMenu();
+				if ( status == "error" ) {
+					var msg = "Sorry but there was an error: ";
+					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+				}
+				if (status == "success")
+				{
+					//alert('OK');
+				}
+			});
+		}
+		
 		if (p=='calendar')
 		{
 			$("#page_index").load("page_calendar.html");
 			fechaMenu();
 		}
+
+
 		if (p=='newemergencycontact')
 		{
 			$("#page_index").load("page_newemergencycontact.html");
 		}
-		
-		
-		
-		
-//		$(".test")
 	}
 		
 		var seconds = 6;
@@ -552,7 +725,6 @@ infoWindow = new google.maps.InfoWindow();
 				  lng: 18.8569261
 				},
 				function(data,status){
-					alert(data);
 					if (data.trim()!='OK')
 					{
 						document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Campus Security has NOT been notified.</div>';
