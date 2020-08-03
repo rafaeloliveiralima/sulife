@@ -32,6 +32,13 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+		 window.FirebasePlugin.getToken(function(token) {             
+              alert(token);             
+           }, function(error) {                
+                console.error(error);           
+               });                
+           this.receivedEvent('deviceready'); 
+		
         app.receivedEvent('deviceready');
     },
     // Update DOM on a Received Event
