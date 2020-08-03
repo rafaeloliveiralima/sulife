@@ -6,6 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+
+
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
@@ -826,11 +833,15 @@
 		//pegaImagens(id);
 	}
 
-	var id_ 
+	var id_ ;
 	
 	function getImage(tipo,funcao,id)
 	{
 		id_ = id;
+		alert('tipo:'+tipo);
+		alert('funcao:'+funcao);
+		alert('id:'+id);
+		alert('id_:'+id_);
 		if (tipo=='CAMERA')
 		{
 			if (funcao=='PEDIDO')
@@ -869,9 +880,11 @@
 	}
 	
 	function uploadPhoto(imageURI) {
+		alert(imageURI.substr(imageURI.lastIndexOf('/') + 1));
 		var options = new FileUploadOptions();
 		options.fileKey = "file";
-		options.fileName = leftPad(id_,5)+'_'+imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		//options.fileName = leftPad(id_,5)+'_'+imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
 		options.mimeType = "image/jpeg";
 		console.log(options.fileName);
 		var params = new Object();
@@ -882,7 +895,7 @@
 
 		var ft = new FileTransfer();
 		ft.onprogress = function(progressEvent) {
-			//alert(progressEvent.loaded);
+			alert(progressEvent.loaded);
 			//document.getElementById('btn_camera_'+document.getElementById('idpedidoparaatendimento').value+'').value = progressEvent.loaded;
 			/*if (progressEvent.lengthComputable) {
 				loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total);
@@ -891,16 +904,20 @@
 			}
 			*/
 		};
-		
-		ft.upload(imageURI, "http://tempustecnologia.com/sulife/upload.php", function(result){
-				navigator.notification.alert(
+		alert('imageURI:'+imageURI);
+		ft.upload(imageURI, "http://www.tempustecnologia.com/sulife/upload.php", function(result){
+				alert('3');
+
+				/*navigator.notification.alert(
 									'Imagem carregada com sucesso.',  // message
 									alertDismissed,         // callback
 									'Atenção',            // title
 									'OK'                  // buttonName
 				);
+				*/
 			console.log(JSON.stringify(result));
 		}, function(error){
+				alert(JSON.stringify(error));
 				navigator.notification.alert(
 									'Não foi possível carregar a imagem.',  // message
 									alertDismissed,         // callback
