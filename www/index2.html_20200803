@@ -838,10 +838,10 @@
 	function getImage(tipo,funcao,id)
 	{
 		id_ = id;
-		//alert('tipo:'+tipo);
-		//alert('funcao:'+funcao);
-		//alert('id:'+id);
-		//alert('id_:'+id_);
+		alert('tipo:'+tipo);
+		alert('funcao:'+funcao);
+		alert('id:'+id);
+		alert('id_:'+id_);
 		if (tipo=='CAMERA')
 		{
 			if (funcao=='PEDIDO')
@@ -879,18 +879,12 @@
 		
 	}
 	
-
-	function leftPad(value, totalWidth, paddingChar) {
-		var length = totalWidth - value.toString().length + 1;
-		return Array(length).join(paddingChar || '0') + value;
-	};
-		 	
 	function uploadPhoto(imageURI) {
-		//alert(imageURI.substr(imageURI.lastIndexOf('/') + 1));
+		alert(imageURI.substr(imageURI.lastIndexOf('/') + 1));
 		var options = new FileUploadOptions();
 		options.fileKey = "file";
-		options.fileName = leftPad(id_,5)+'_'+imageURI.substr(imageURI.lastIndexOf('/') + 1);
-		//options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		//options.fileName = leftPad(id_,5)+'_'+imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
 		options.mimeType = "image/jpeg";
 		console.log(options.fileName);
 		var params = new Object();
@@ -910,20 +904,20 @@
 			}
 			*/
 		};
-		//alert('imageURI:'+imageURI);
+		alert('imageURI:'+imageURI);
 		ft.upload(imageURI, "http://www.tempustecnologia.com/sulife/upload.php", function(result){
-				//alert('3');
+				alert('3');
 
-				navigator.notification.alert(
+				/*navigator.notification.alert(
 									'Imagem carregada com sucesso.',  // message
 									alertDismissed,         // callback
 									'Atenção',            // title
 									'OK'                  // buttonName
 				);
-				
+				*/
 			console.log(JSON.stringify(result));
 		}, function(error){
-				//alert(JSON.stringify(error));
+				alert(JSON.stringify(error));
 				navigator.notification.alert(
 									'Não foi possível carregar a imagem.',  // message
 									alertDismissed,         // callback
