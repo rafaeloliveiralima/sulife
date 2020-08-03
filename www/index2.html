@@ -818,6 +818,99 @@
 
 		//var cancel = setInterval(incrementSeconds, 1000);
 		
+		// cameras
+		
+	function abreCamera(tipo,funcao,id)
+	{
+    	getImage(tipo,funcao,id);
+		//pegaImagens(id);
+	}
+
+	var id_ 
+	
+	function getImage(tipo,funcao,id)
+	{
+		id_ = id;
+		if (tipo=='CAMERA')
+		{
+			if (funcao=='PEDIDO')
+			{
+				navigator.camera.getPicture(uploadPhoto, function(message) {
+					alert('get picture failed');
+				}, {
+				quality: 25,
+				destinationType: navigator.camera.DestinationType.FILE_URI,
+			sourceType: navigator.camera.PictureSourceType.CAMERA
+			 });
+			}
+			else
+			{
+				navigator.camera.getPicture(uploadPhoto, function(message) {
+					alert('get picture failed');
+				}, {
+				quality: 25,
+				destinationType: navigator.camera.DestinationType.FILE_URI,
+				sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+				});
+			
+			}
+		}
+		else
+		{
+			navigator.camera.getPicture(uploadPhoto, function(message) {
+				alert('get picture failed'+message);
+			}, {
+			quality: 50,
+			destinationType: navigator.camera.DestinationType.FILE_URI,
+			sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+			});
+		}
+		
+	}
+	
+	function uploadPhoto(imageURI) {
+		var options = new FileUploadOptions();
+		options.fileKey = "file";
+		options.fileName = leftPad(id_,5)+'_'+imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		options.mimeType = "image/jpeg";
+		console.log(options.fileName);
+		var params = new Object();
+		params.value1 = "test";
+		params.value2 = "param";
+		options.params = params;
+		options.chunkedMode = false;
+
+		var ft = new FileTransfer();
+		ft.onprogress = function(progressEvent) {
+			//alert(progressEvent.loaded);
+			//document.getElementById('btn_camera_'+document.getElementById('idpedidoparaatendimento').value+'').value = progressEvent.loaded;
+			/*if (progressEvent.lengthComputable) {
+				loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total);
+			} else {
+				loadingStatus.increment();
+			}
+			*/
+		};
+		
+		ft.upload(imageURI, "http://tempustecnologia/sulife/upload.php", function(result){
+				navigator.notification.alert(
+									'Imagem carregada com sucesso.',  // message
+									alertDismissed,         // callback
+									'Atenção',            // title
+									'OK'                  // buttonName
+				);
+			console.log(JSON.stringify(result));
+		}, function(error){
+				navigator.notification.alert(
+									'Não foi possível carregar a imagem.',  // message
+									alertDismissed,         // callback
+									'Atenção',            // title
+									'OK'                  // buttonName
+				);
+			console.log(JSON.stringify(error));
+		}, options);
+	}		
+		
     </script>
 </body>
 
