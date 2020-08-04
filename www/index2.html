@@ -830,6 +830,41 @@
 						}
 					});							
 				};
+				
+				var watchID = undefined;
+
+				function sigaMe()
+				{
+					alert('sigame');
+					function onSuccess(position) {
+						var updatedLatitude = position.coords.latitude;
+						var updatedLongitude = position.coords.longitude;
+
+						if (updatedLatitude != Latitude && updatedLongitude != Longitude) {
+
+							Latitude = updatedLatitude;
+							Longitude = updatedLongitude;
+
+							// Calls function we defined earlier.
+							//getWeather(updatedLatitude, updatedLongitude);
+						}
+					
+						alert('Latitude: '  + position.coords.latitude+ ' Longitude: ' + position.coords.longitude);
+					
+					
+					}
+
+					// onError Callback receives a PositionError object
+					//
+					function onError(error) {
+						alert('code: '    + error.code    + '\n' +
+							  'message: ' + error.message + '\n');
+					}
+
+					// Options: throw an error if no update is received every 30 seconds.
+					//
+					var watchID = navigator.geolocation.watchPosition(onSuccess, onError, { timeout: 30000 });		
+				}
 
 				// onError Callback receives a PositionError object
 				//
@@ -840,42 +875,14 @@
 				navigator.geolocation.getCurrentPosition(onSuccessMyPosition, onErrorMyPosition);			
 				restoreState();
 			}
+			
+			
+			
+			
+			
 		}
 
-	var watchID = undefined;
 
-	function sigaMe()
-	{
-		alert('sigame');
-		function onSuccess(position) {
-			var updatedLatitude = position.coords.latitude;
-			var updatedLongitude = position.coords.longitude;
-
-			if (updatedLatitude != Latitude && updatedLongitude != Longitude) {
-
-				Latitude = updatedLatitude;
-				Longitude = updatedLongitude;
-
-				// Calls function we defined earlier.
-				//getWeather(updatedLatitude, updatedLongitude);
-			}
-		
-			alert('Latitude: '  + position.coords.latitude+ ' Longitude: ' + position.coords.longitude);
-		
-		
-		}
-
-		// onError Callback receives a PositionError object
-		//
-		function onError(error) {
-			alert('code: '    + error.code    + '\n' +
-				  'message: ' + error.message + '\n');
-		}
-
-		// Options: throw an error if no update is received every 30 seconds.
-		//
-		var watchID = navigator.geolocation.watchPosition(onSuccess, onError, { timeout: 30000 });		
-	}
 		
 		
 		//var cancel = setInterval(incrementSeconds, 1000);
