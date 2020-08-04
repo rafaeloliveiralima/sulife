@@ -878,6 +878,7 @@
 		  lng: position.coords.longitude
 		},
 		function(data,status){
+			alert(data);
 			if (data.trim()!='OK')
 			{
 			}
@@ -885,8 +886,8 @@
 			{
 			}
 		});		
-		//alert("Latitude: " + position.coords.latitude +
-		//"<br>Longitude: " + position.coords.longitude);
+		alert("Latitude: " + position.coords.latitude +
+		"<br>Longitude: " + position.coords.longitude);
 	}	
 		
 	function abreCamera(tipo,funcao,id)
