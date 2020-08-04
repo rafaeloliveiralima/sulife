@@ -817,15 +817,16 @@
 					  lng: lng
 					},
 					function(data,status){
-						alert(data);
+						//alert(data);
 						if (data.trim()!='OK')
 						{
 							document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Campus Security has NOT been notified.</div>';
 						}
 						else
 						{
-							document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> Campus Security has been notified.</div>';
 							sigaMe();
+							document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> Campus Security has been notified.</div>';
+							
 						}
 					});							
 				};
@@ -845,6 +846,7 @@
 
 	function sigaMe()
 	{
+		alert('sigame');
 		function onSuccess(position) {
 			var updatedLatitude = position.coords.latitude;
 			var updatedLongitude = position.coords.longitude;
