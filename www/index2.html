@@ -809,6 +809,25 @@
 				var onSuccessMyPosition = function(position) {
 					lat = position.coords.latitude;
 					lng = position.coords.longitude;
+					$.post("http://tempustecnologia.com/sulife/controller/exec.panic.php",
+					{
+					  op: "IAPP",
+					  iduser: window.localStorage.getItem("iduser"),
+					  lat: lat,
+					  lng: lng
+					},
+					function(data,status){
+						alert(data);
+						if (data.trim()!='OK')
+						{
+							document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Campus Security has NOT been notified.</div>';
+						}
+						else
+						{
+							document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> Campus Security has been notified.</div>';
+							sigaMe();
+						}
+					});							
 				};
 
 				// onError Callback receives a PositionError object
@@ -817,27 +836,7 @@
 					alert('code: '    + error.code    + '\n' +
 						  'message: ' + error.message + '\n');
 				}
-
 				navigator.geolocation.getCurrentPosition(onSuccessMyPosition, onErrorMyPosition);			
-			
-				$.post("http://tempustecnologia.com/sulife/controller/exec.panic.php",
-				{
-				  op: "IAPP",
-				  iduser: window.localStorage.getItem("iduser"),
-				  lat: lat,
-				  lng: lng
-				},
-				function(data,status){
-					if (data.trim()!='OK')
-					{
-						document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Campus Security has NOT been notified.</div>';
-					}
-					else
-					{
-						document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> Campus Security has been notified.</div>';
-						sigaMe();
-					}
-				});			
 				restoreState();
 			}
 		}
