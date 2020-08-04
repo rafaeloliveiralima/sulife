@@ -822,6 +822,7 @@
 					}
 					else
 					{
+						alert('Enviar para o siga-me');
 						sigaMe();
 						document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> Campus Security has been notified.</div>';
 						
@@ -865,7 +866,7 @@
 //		alert('sigame');
 		// Options: throw an error if no update is received every 30 seconds.
 		//
-		var watchID = navigator.geolocation.watchPosition(onSuccess, onError, { timeout: 30000 });		
+		watchID = navigator.geolocation.watchPosition(onSuccess, onError);		
 	}		
 		
 		
