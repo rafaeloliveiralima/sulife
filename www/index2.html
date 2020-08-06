@@ -318,7 +318,6 @@
 						'Success',            // title
 						'OK'                  // buttonName
 				);	
-				//mensagem('success','Cadastrado com sucesso!');
 			}
 			else
 			{
@@ -403,24 +402,6 @@
 			$("#div_event").html(data); 
 		});
 	}
-	
-	function mensagem(tipo,m)
-	{
-		/*if (tipo=='success')
-		{
-			document.getElementById('div_mensagem').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> '+m+'</div>';
-		}
-		if (tipo=='warning')
-		{
-			document.getElementById('div_mensagem').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> '+m+'</div>';
-		}
-		if (tipo=='error')
-		{
-			document.getElementById('div_mensagem').innerHTML = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-error"><i class="fa fa-check-circle"></i> Error</h3> '+m+'</div>';
-		}
-		*/
-	}
-	// delete
 	
 	function deleteEmergencyContact(id)
 	{
@@ -806,7 +787,9 @@
 			{
 				var lat=0;
 				var lng=0;
-
+				
+				navigator.geolocation.getCurrentPosition(onSuccess, onError);
+				
 				$.post("http://tempustecnologia.com/sulife/controller/exec.panic.php",
 				{
 				  op: "IAPP",
@@ -845,6 +828,8 @@
 			// Calls function we defined earlier.
 			//getWeather(updatedLatitude, updatedLongitude);
 		}
+		lat = Latitude;
+		lng = Longitude;
 		alert('Latitude: '  + position.coords.latitude+ ' Longitude: ' + position.coords.longitude);
 	}	
 	
@@ -870,6 +855,7 @@
 	}
 	
 	function showPosition(position) {
+	
 		$.post("http://tempustecnologia.com/sulife/controller/exec.panic.php",
 		{
 		  op: "UPATEAPP",
@@ -881,13 +867,15 @@
 			//alert(data);
 			if (data.trim()!='OK')
 			{
+				document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Coordenada atualizada.</div>';
 			}
 			else
 			{
+				document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Não foi possível atualizar a coordenada.</div>';
 			}
 		});		
-		//alert("Latitude: " + position.coords.latitude +
-		//"<br>Longitude: " + position.coords.longitude);
+		alert("Latitude: " + position.coords.latitude +
+		"<br>Longitude: " + position.coords.longitude);
 	}	
 		
 	function abreCamera(tipo,funcao,id)
