@@ -343,7 +343,7 @@
 	
 	function getGalery()
 	{
-		$.post("http://tempustecnologia.com/sulife/controller/exec.gallery.php",
+		$.post("http://tempustecnologia.com/sulife/controller/exec.news.php",
 		{
 		  op: "LISTAPP",
 		  iduser: window.localStorage.getItem("name")
@@ -670,11 +670,19 @@
 					$.post("http://tempustecnologia.com/sulife/controller/exec.residence.php",
 					{
 						op: "LISTAPP",
-						idresidence: document.getElementById('cmboxresidence').value
+						idresidence: window.localStorage.getItem("idresidence").trim()
 					},
 					function(data,status){
 						$("#div_residence").html(data); 
+						document.getElementById('cmboxresidence').value=window.localStorage.getItem("idresidence").trim();
 					});
+
+					document.getElementById('edtname').value=window.localStorage.getItem("name");
+					document.getElementById('edtsurname').value=window.localStorage.getItem("surname");
+					document.getElementById('edtphonenumber').value=window.localStorage.getItem("phonenumber");
+					document.getElementById('edtgender').value=window.localStorage.getItem("gender").trim();
+				
+					
 				}
 			});
 		}		
@@ -868,7 +876,7 @@
 		});		
 		//alert("Latitude: " + position.coords.latitude +
 		//"<br>Longitude: " + position.coords.longitude);
-		document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Coordenada atualizada. Lat:'+position.coords.latitude+' Lng:'+position.coords.longitude+'</div>';
+		document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> Coordenada atualizada. Lat:'+position.coords.latitude+' Lng:'+position.coords.longitude+'</div>';
 	}	
 		
 	function abreCamera(tipo,funcao,id)

@@ -214,13 +214,21 @@
 				name = res[1];
 				studentnumber = res[2];
 				idresidence = res[3];
+				surname = res[4];
+				phonenumber = res[5];
+				gender = res[6];
+			
 			
 				if (data.trim()!='ERRO')
 				{
 					
 					window.localStorage.setItem("iduser", iduser);
 					window.localStorage.setItem("name",name);
+					window.localStorage.setItem("studentnumber",studentnumber);
 					window.localStorage.setItem("idresidence",idresidence);
+					window.localStorage.setItem("surname",surname);
+					window.localStorage.setItem("phonenumber",phonenumber);
+					window.localStorage.setItem("gender",gender);
 					window.location.href = 'index2.html';
 				}
 				else
