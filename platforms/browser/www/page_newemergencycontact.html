@@ -1,0 +1,49 @@
+<section id="wrapper" class="login-register login-sidebar" style='height:100vh;background-color:#61233C'>
+        <div class="login-box card" style='background-color:#61233C'>
+            <div class="card-body">
+                <form class="form-horizontal form-material" id="loginform" action="" style='color: white'>
+                    <!--<a href="javascript:void(0)" class="text-center db"><img src="../assets/images/logo-icon.png" alt="Home" /><br/><img src="../assets/images/logo-text.png" alt="Home" /></a>-->
+                    
+					<h3 class="box-title m-t-40 m-b-0" style='color: white'>Emergency Contact</h3><small style='color: white'>Create new emergency contact</small>
+                    <div class="form-group m-t-20">
+                        <div class="col-xs-12">
+                            <input class="form-control" id='edtname' name='edtname' type="text" required="" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="form-group " >
+                        <div class="col-xs-12">
+                            <input class="form-control" id='edtsurname' name='edtsurname' type="text" required="" placeholder="Surname">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" id='edtphonenumber' name='edtphonenumber' type="text" required="" placeholder="Phone Number">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" id='edtemail' name='edtemail' type="text" required="" placeholder="E-mail">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" id='edtrelationship' name='edtrelationship' type="text" required="" placeholder="Relationship">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <div class="el-card-avatar el-overlay-1"> <img src="../assets/images/users/1.jpg" alt="user" height='150px'>
+                            </div>	
+                        </div>
+                    </div>
+					
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button id='btnregisternewemergeycontact' onclick='addEmergencyContact()' class="btn btn-info btn-lg text-uppercase waves-effect waves-light" type="button">Register</button>
+                             <a class="btn btn-info btn-lg text-uppercase waves-effect waves-light" onclick="getPage('home',false)" >CANCEL</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>

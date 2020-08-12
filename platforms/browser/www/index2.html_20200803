@@ -7,13 +7,11 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
 
-	<meta http-equiv="cache-control" content="max-age=0" />
-	<meta http-equiv="cache-control" content="no-cache" />
-	<meta http-equiv="expires" content="0" />
-	<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-	<meta http-equiv="pragma" content="no-cache" />	
 
     <meta name="description" content="">
     <meta name="author" content="">
@@ -282,7 +280,7 @@
 						alertDismissed,         // callback
 						'Success',            // title
 						'OK'                  // buttonName
-				);
+				);	
 				getPage('followups',false);
 			}
 			else
@@ -318,6 +316,7 @@
 						'Success',            // title
 						'OK'                  // buttonName
 				);	
+				//mensagem('success','Cadastrado com sucesso!');
 			}
 			else
 			{
@@ -343,7 +342,7 @@
 	
 	function getGalery()
 	{
-		$.post("http://tempustecnologia.com/sulife/controller/exec.news.php",
+		$.post("http://tempustecnologia.com/sulife/controller/exec.gallery.php",
 		{
 		  op: "LISTAPP",
 		  iduser: window.localStorage.getItem("name")
@@ -403,6 +402,24 @@
 		});
 	}
 	
+	function mensagem(tipo,m)
+	{
+		/*if (tipo=='success')
+		{
+			document.getElementById('div_mensagem').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> '+m+'</div>';
+		}
+		if (tipo=='warning')
+		{
+			document.getElementById('div_mensagem').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> '+m+'</div>';
+		}
+		if (tipo=='error')
+		{
+			document.getElementById('div_mensagem').innerHTML = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-error"><i class="fa fa-check-circle"></i> Error</h3> '+m+'</div>';
+		}
+		*/
+	}
+	// delete
+	
 	function deleteEmergencyContact(id)
 	{
 		$.post("http://tempustecnologia.com/sulife/controller/exec.emergencycontact.php",
@@ -446,8 +463,6 @@
 	
 	function getPage(p,closemenu)
 	{
-		//alert(p);
-		//alert(closemenu);
 		if (p=='home')
 		{
 			$("#page_index").load("page_index.html", function( response, status, xhr ) {
@@ -672,19 +687,11 @@
 					$.post("http://tempustecnologia.com/sulife/controller/exec.residence.php",
 					{
 						op: "LISTAPP",
-						idresidence: window.localStorage.getItem("idresidence").trim()
+						idresidence: document.getElementById('cmboxresidence').value
 					},
 					function(data,status){
 						$("#div_residence").html(data); 
-						document.getElementById('cmboxresidence').value=window.localStorage.getItem("idresidence").trim();
 					});
-
-					document.getElementById('edtname').value=window.localStorage.getItem("name");
-					document.getElementById('edtsurname').value=window.localStorage.getItem("surname");
-					document.getElementById('edtphonenumber').value=window.localStorage.getItem("phonenumber");
-					document.getElementById('edtgender').value=window.localStorage.getItem("gender").trim();
-				
-					
 				}
 			});
 		}		
@@ -713,7 +720,7 @@
 				}
 				if (status == "success")
 				{
-					getTimetable();//alert('OK');
+					//alert('OK');
 				}
 			});
 		}
@@ -795,20 +802,14 @@
 			}
 			if (seconds<0)
 			{
-				var lat=0;
-				var lng=0;
-				
-				navigator.geolocation.getCurrentPosition(onSuccess, onError);
-				
 				$.post("http://tempustecnologia.com/sulife/controller/exec.panic.php",
 				{
 				  op: "IAPP",
 				  iduser: window.localStorage.getItem("iduser"),
-				  lat: lat,
-				  lng: lng
+				  lat: -33.9329023,
+				  lng: 18.8569261
 				},
 				function(data,status){
-					//alert(data);
 					if (data.trim()!='OK')
 					{
 						document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Campus Security has NOT been notified.</div>';
@@ -816,70 +817,15 @@
 					else
 					{
 						document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> Campus Security has been notified.</div>';
-						//alert('Enviar para o siga-me');
-						getLocation();
 					}
-				});							
+				});			
 				restoreState();
 			}
 		}
 
-	var watchID = '';
-
-	function onSuccess(position) {
-		var updatedLatitude = position.coords.latitude;
-		var updatedLongitude = position.coords.longitude;
-		if (updatedLatitude != Latitude && updatedLongitude != Longitude) {
-
-			Latitude = updatedLatitude;
-			Longitude = updatedLongitude;
-
-			// Calls function we defined earlier.
-			//getWeather(updatedLatitude, updatedLongitude);
-		}
-		lat = Latitude;
-		lng = Longitude;
-		alert('Latitude: '  + position.coords.latitude+ ' Longitude: ' + position.coords.longitude);
-	}	
-	
-	function onError(error) {
-		alert('code: '    + error.code    + '\n' +
-			  'message: ' + error.message + '\n');
-	}
-	
-	function getLocation() {
-	  if (navigator.geolocation) {
-		watchID = navigator.geolocation.watchPosition(showPosition);
-	  } else {
-		alert("Geolocation is not supported by this browser.");
-	  }
-	}
-	
-	function showPosition(position) {
-	
-		$.post("http://tempustecnologia.com/sulife/controller/exec.panic.php",
-		{
-		  op: "UPATEAPP",
-		  iduser: window.localStorage.getItem("iduser"),
-		  lat: position.coords.latitude,
-		  lng: position.coords.longitude
-		},
-		function(data,status){
-			//alert(data);
-			if (data.trim()!='OK')
-			{
-				document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Não foi possível atualizar a coordenada.</div>';
-				navigator.geolocation.clearWatch(watchID);
-			}
-			else
-			{
-				document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-warning"><i class="fa fa-check-circle"></i> Warning</h3> Coordenada atualizada. Lat:'+lat+' Lng:'+lng+'</div>';
-			}
-		});		
-		//alert("Latitude: " + position.coords.latitude +
-		//"<br>Longitude: " + position.coords.longitude);
-		document.getElementById('div_alert_panic').innerHTML = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button><h3 class="text-success"><i class="fa fa-check-circle"></i> Success</h3> Coordenada atualizada. Lat:'+position.coords.latitude+' Lng:'+position.coords.longitude+'</div>';
-	}	
+		//var cancel = setInterval(incrementSeconds, 1000);
+		
+		// cameras
 		
 	function abreCamera(tipo,funcao,id)
 	{
@@ -892,10 +838,10 @@
 	function getImage(tipo,funcao,id)
 	{
 		id_ = id;
-		//alert('tipo:'+tipo);
-		//alert('funcao:'+funcao);
-		//alert('id:'+id);
-		//alert('id_:'+id_);
+		alert('tipo:'+tipo);
+		alert('funcao:'+funcao);
+		alert('id:'+id);
+		alert('id_:'+id_);
 		if (tipo=='CAMERA')
 		{
 			if (funcao=='PEDIDO')
@@ -933,18 +879,12 @@
 		
 	}
 	
-
-	function leftPad(value, totalWidth, paddingChar) {
-		var length = totalWidth - value.toString().length + 1;
-		return Array(length).join(paddingChar || '0') + value;
-	};
-		 	
 	function uploadPhoto(imageURI) {
-		//alert(imageURI.substr(imageURI.lastIndexOf('/') + 1));
+		alert(imageURI.substr(imageURI.lastIndexOf('/') + 1));
 		var options = new FileUploadOptions();
 		options.fileKey = "file";
-		options.fileName = leftPad(id_,5)+'_'+imageURI.substr(imageURI.lastIndexOf('/') + 1);
-		//options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		//options.fileName = leftPad(id_,5)+'_'+imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
 		options.mimeType = "image/jpeg";
 		console.log(options.fileName);
 		var params = new Object();
@@ -964,20 +904,20 @@
 			}
 			*/
 		};
-		//alert('imageURI:'+imageURI);
+		alert('imageURI:'+imageURI);
 		ft.upload(imageURI, "http://www.tempustecnologia.com/sulife/upload.php", function(result){
-				//alert('3');
+				alert('3');
 
-				navigator.notification.alert(
+				/*navigator.notification.alert(
 									'Imagem carregada com sucesso.',  // message
 									alertDismissed,         // callback
 									'Atenção',            // title
 									'OK'                  // buttonName
 				);
-				
+				*/
 			console.log(JSON.stringify(result));
 		}, function(error){
-				//alert(JSON.stringify(error));
+				alert(JSON.stringify(error));
 				navigator.notification.alert(
 									'Não foi possível carregar a imagem.',  // message
 									alertDismissed,         // callback
@@ -986,100 +926,7 @@
 				);
 			console.log(JSON.stringify(error));
 		}, options);
-	}	
-
-
-// time table
-
-function getTimetable()
-{
-	$.post("http://tempustecnologia.com/sulife/controller/exec.timetable.php",
-	{
-	  op: "LISTAPP",
-	  iduser: window.localStorage.getItem("iduser")
-	},
-	function(data,status){
-		$("#div_timetable").html(data); 
-	});
-}
-
-function abreModal(dia,hora)
-{
-	document.getElementById('day').value=dia;
-	document.getElementById('time').value=hora;
-	$('#exampleModal').modal();
-}
-
-function addActivity(dia,hora,activity)
-{
-	//alert('dia:'+dia+' hora:'+hora+' Atividade:'+activity);
-	$.post("http://tempustecnologia.com/sulife/controller/exec.timetable.php",
-	{
-		op: "IAPP",
-		iduser: window.localStorage.getItem("iduser"),
-		day: dia,
-		time: hora,
-		activity: activity
-	},
-	function(data,status){
-		if (data.trim()=='OK')
-		{
-			navigator.notification.alert(
-				'Adicionado com sucesso.',  // message
-				alertDismissed,         // callback
-				'Success',            // title
-				'OK'                  // buttonName
-			);
-			$('#exampleModal').hide();
-			getPage('timetable',false);
-		}
-		else
-		{
-			navigator.notification.alert(
-			'Não foi possível excluir.',  // message
-					alertDismissed,         // callback
-					'Warning',            // title
-					'OK'                  // buttonName
-			);	
-		}
-	});
-
-}
-
-
-function deleteActivity(id)
-{
-
-	$.post("http://tempustecnologia.com/sulife/controller/exec.timetable.php",
-	{
-	  op: "E",
-	  idtimetable: id
-	},
-	function(data,status){
-		if (data.trim()=='OK')
-		{
-			navigator.notification.alert(
-				'Excluído com sucesso.',  // message
-				alertDismissed,         // callback
-				'Success',            // title
-				'OK'                  // buttonName
-			);
-			getPage('timetable',false);
-			
-		}
-		else
-		{
-			navigator.notification.alert(
-			'Não foi possível excluir.',  // message
-					alertDismissed,         // callback
-					'Warning',            // title
-					'OK'                  // buttonName
-			);	
-		}
-	});
-
-}
-
+	}		
 		
     </script>
 </body>

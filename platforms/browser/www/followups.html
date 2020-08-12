@@ -19,6 +19,13 @@
     <!-- Custom CSS -->
 <!--    <link href="dist/css/style.min.css" rel="stylesheet">-->
     <link href="dist/css/style.css" rel="stylesheet">
+ <!-- adicionado para ver se aparecem os icones no app -->
+	<link href="assets/icons/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="assets/icons/themify-icons/themify-icons.css" rel="stylesheet">
+
+	<!-- adicionado para ver se aparecem os icones no app -->
+	<link href="assets/icons/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="assets/icons/themify-icons/themify-icons.css" rel="stylesheet">
     <!-- Dashboard 1 Page CSS -->
     <link href="dist/css/pages/dashboard1.css" rel="stylesheet">
 	
@@ -97,14 +104,14 @@
                     <ul class="navbar-nav my-lg-0">
                         
                         <li class="nav-item dropdown u-pro">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../assets/images/users/1.jpg" alt="user" class=""> <span class="hidden-md-down">Mark &nbsp;<i class="fa fa-angle-down"></i></span> </a>
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class=""> <span class="hidden-md-down">Mark &nbsp;<i class="fa fa-angle-down"></i></span> </a>
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <!-- text-->
                                 <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
                                 <!-- text-->
                                 <div class="dropdown-divider"></div>
                                 <!-- text-->
-                                <a href="settings" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
+                                <a href="settings.html" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
                                 <!-- text-->
                                 <div class="dropdown-divider"></div>
                                 <!-- text-->
@@ -140,7 +147,7 @@
                                 <li><a href="followups.html">Follow ups</a></li>
                                 <li><a href="events.html">Events</a></li>
                                 <li><a href="gallary.html">Gallary</a></li>
-                                <li><a href="app-contact2.html">Contact Info</a></li>
+                                <li><a href="contactinfo.html">Contact Info</a></li>
                             </ul>
 						</li>
                         <li> 
@@ -182,16 +189,16 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Broken drain<td><span class="label label-danger">Complete</span> </td>
+                                                <td>Broken drain<td><span class="label label-success">Complete</span> </td>
                                             </tr>
                                             <tr>
                                                 <td>Broken chair<td><span class="label label-danger">Outstanding</span> </td>
                                             </tr>
                                             <tr>
-                                                <td>Broken window<td><span class="label label-danger">Complete</span> </td>
+                                                <td>Broken window<td><span class="label label-success">Complete</span> </td>
                                             </tr>
                                             <tr>
-                                                <td>Broken window<td><span class="label label-danger">Complete</span> </td>
+                                                <td>Broken door<td><span class="label label-success">Complete</span> </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -234,6 +241,7 @@
     <!--Custom JavaScript -->
 <!--    <script src="dist/js/custom.min.js"></script>-->
     <script src="dist/js/custom.js"></script>
+	
     <!-- ============================================================== -->
     <!-- This page plugins -->
     <!-- ============================================================== -->
@@ -246,56 +254,7 @@
     <!-- Chart JS -->
     <script src="dist/js/dashboard1.js"></script>
     <script src="assets/node_modules/toast-master/js/jquery.toast.js"></script>
-
-
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbVmUiciv97tHYcMowlhqSoQ3au7goKHI&libraries=drawing"></script>
-<!--    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCUBL-6KdclGJ2a_UpmB2LXvq7VOcPT7K4&sensor=true"></script>-->
-    <script src="assets/node_modules/gmaps/gmaps.min.js"></script>
-    <script src="assets/node_modules/gmaps/jquery.gmaps.js"></script>	
 	
-	<script type="text/javascript">
-        
-		var seconds = 0;
-		var panic = false;
-		var el = document.getElementById('seconds-counter');
-		cancel = setInterval(incrementSeconds, 1000);
-
-		function start()
-		{
-			panic = !panic;
-			if (panic==false)
-			{
-				clearInterval(cancel);
-			}
-			else
-			{
-				//cancel = setInterval(incrementSeconds, 1000);
-				incrementSeconds();
-			}
-		}
-		
-		
-		function incrementSeconds() {
-		
-			if (panic==true)
-			{
-				seconds += 1;
-			}
-			else
-			{
-				seconds = 0;
-			}
-			el.innerText = "You have been here for " + seconds + " seconds.";
-			
-			if (seconds==6)
-			{
-				alert('Mensagem enviada');
-			}
-		}
-
-		//var cancel = setInterval(incrementSeconds, 1000);
-		
-    </script>
 </body>
 
 </html>
