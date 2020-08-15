@@ -326,7 +326,8 @@
 		  edtname: document.getElementById('edtname').value,
 		  edtsurname: document.getElementById('edtsurname').value,
 		  edtphonenumber: document.getElementById('edtphonenumber').value,
-		  edtrelationship: document.getElementById('edtrelationship').value
+		  edtrelationship: document.getElementById('edtrelationship').value,
+		  edtemail: document.getElementById('edtemail').value
 		},
 		function(data,status){
 			if (data.trim()=='OK')
@@ -618,7 +619,7 @@
 					  title: place.name,
 					  position: place.geometry.location
 					})
-			  );
+					);
 
 				  if (place.geometry.viewport) {
 					// Only geocodes have viewport.
@@ -627,6 +628,18 @@
 					bounds.extend(place.geometry.location);
 				  }
 				});
+				
+				// criar o ponto onde eu estou
+								  // Create a marker for each place.
+				  markers.push(
+					new google.maps.Marker({
+					  map,
+					  title: 'Me',
+					  position: { lat: -33.9329023, lng: 18.8569261 }
+					})
+					);
+				
+				
 				map.fitBounds(bounds);
 				input.focus();
 			});  
@@ -982,7 +995,7 @@
 	function abreCamera(tipo,funcao,id)
 	{
     	getImage(tipo,funcao,id);
-		//pegaImagens(id);
+		getPage('followups',false)
 	}
 
 	var id_ ;
@@ -1076,7 +1089,7 @@
 				//alert('3');
 
 				navigator.notification.alert(
-									'Imagem carregada com sucesso.',  // message
+									'Image uploaded successfully.',  // message
 									alertDismissed,         // callback
 									'Atenção',            // title
 									'OK'                  // buttonName
@@ -1086,7 +1099,7 @@
 		}, function(error){
 				//alert(JSON.stringify(error));
 				navigator.notification.alert(
-									'Não foi possível carregar a imagem.',  // message
+									'Could not upload the image.',  // message
 									alertDismissed,         // callback
 									'Atenção',            // title
 									'OK'                  // buttonName
