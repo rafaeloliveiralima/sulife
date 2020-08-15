@@ -11458,7 +11458,10 @@ icons path
   overflow: hidden; }
 
 .page-wrapper {
-  background: #edf1f5;
+  /*background: #edf1f5;*/
+  background: #61233C;
+  
+  
   position: relative; }
 
 .container-fluid {

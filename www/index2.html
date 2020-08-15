@@ -140,7 +140,7 @@
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class=""> <span class="hidden-md-down"><i class="fa fa-angle-down"></i></span> </a>
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <!-- text-->
-                                <a onclick="getPage('settings',false)" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
+                                <a onclick="getPage('settings',false)" class="dropdown-item"><i class="ti-settings"></i> Account Setting (<span id='div_name'></span>)</a>
                                 <div class="dropdown-divider"></div>
                                 <a href="index.html" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                                 <!-- text-->
@@ -250,6 +250,38 @@
 		$("#page_index").load("page_index.html");
 		document.getElementById('div_name').innerHTML=window.localStorage.getItem("name");
 	});	
+	
+	// botao excluir imagem manutenção
+	function excluirImagemManutencao(arquivo)
+	{
+		//alert(arquivo);
+		$.post("http://tempustecnologia.com/sulife/controller/exec.maintenance.php",
+		{
+		  op: "EARQUIVOAPP",
+		  arquivo:  arquivo
+		},
+		function(data,status){
+			if (data.trim()=='OK')
+			{
+				navigator.notification.alert(
+						'Deleted successfully.',  // message
+						alertDismissed,         // callback
+						'Success',            // title
+						'OK'                  // buttonName
+				);
+				getPage('followups',false)
+			}
+			else
+			{
+				navigator.notification.alert(
+						'Unable to delete.',  // message
+						alertDismissed,         // callback
+						'error',            // title
+						'OK'                  // buttonName
+				);				
+			}
+		});
+	}
 	
 	// botão excluir manutenção clicado em folowups
 	function excluirManutencao(id)
