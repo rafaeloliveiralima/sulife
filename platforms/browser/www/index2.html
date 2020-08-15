@@ -543,8 +543,6 @@
 	
 	function getPage(p,closemenu,valor)
 	{
-		//alert(p);
-		//alert(closemenu);
 		if (p=='home')
 		{
 			$("#page_index").load("page_index.html", function( response, status, xhr ) {
@@ -1006,7 +1004,7 @@
 				quality: 25,
 				saveToPhotoAlbum: true,
 				destinationType: navigator.camera.DestinationType.FILE_URI,
-			sourceType: navigator.camera.PictureSourceType.CAMERA
+				sourceType: navigator.camera.PictureSourceType.CAMERA
 			 });
 			}
 			else
@@ -1056,10 +1054,18 @@
 
 		var ft = new FileTransfer();
 		ft.onprogress = function(progressEvent) {
-			alert(progressEvent.loaded);
+			//alert(progressEvent.loaded);
+			var p =  Math.round((progressEvent.loaded / progressEvent.total)*100);
+			
+			var progress = '';
+			progress = '<div class="progress">';
+			progress +='<div class="progress-bar bg-success" role="progressbar" style="width: '+p+'%;height:15px;" role="progressbar"> '+p+'% </div>';
+			progress +='</div>';
+			document.getElementById('progressbarfollowups').innerHTML = progress;
+			
 			//document.getElementById('btn_camera_'+document.getElementById('idpedidoparaatendimento').value+'').value = progressEvent.loaded;
 			/*if (progressEvent.lengthComputable) {
-				loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total);
+				loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total)*100;
 			} else {
 				loadingStatus.increment();
 			}
