@@ -48,31 +48,30 @@
 </head>
 
 <body class="skin-purple fixed-layout">
-
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="exampleModalLabel1">New Activity</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action='' name='frm' id='frm' method='post'>
-													<input type='hidden' name='day' id='day' value=''>
-													<input type='hidden' name='time' id='time' value=''>
-                                                    <div class="form-group">
-                                                        <label for="message-text" class="control-label">Activity:</label>
-                                                        <textarea style='color: black' name='activity' id='activity' class="form-control" id="message-text1"></textarea>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" onclick="addActivity(document.getElementById('day').value,document.getElementById('time').value,document.getElementById('activity').value)" class="btn btn-primary" data-dismiss="modal" style='color: white;background-color:#61233C'>Send message</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="exampleModalLabel1">New Activity</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<form action='' name='frm' id='frm' method='post'>
+						<input type='hidden' name='day' id='day' value=''>
+						<input type='hidden' name='time' id='time' value=''>
+						<div class="form-group">
+							<label for="message-text" class="control-label">Activity:</label>
+							<textarea style='color: black' name='activity' id='activity' class="form-control" id="message-text1"></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" onclick="addActivity(document.getElementById('day').value,document.getElementById('time').value,document.getElementById('activity').value)" class="btn btn-primary" data-dismiss="modal" style='color: white;background-color:#61233C'>Send message</button>
+				</div>
+			</div>
+		</div>
+    </div>
 
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
@@ -141,7 +140,6 @@
                             <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/1.jpg" alt="user" class=""> <span class="hidden-md-down"><i class="fa fa-angle-down"></i></span> </a>
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <!-- text-->
-                                <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> My Profile (<span id='div_name'></span>)</a>
                                 <a onclick="getPage('settings',false)" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
                                 <div class="dropdown-divider"></div>
                                 <a href="index.html" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
@@ -210,7 +208,6 @@
     <!--Menu sidebar -->
     <script src="dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
-<!--    <script src="dist/js/custom.min.js"></script>-->
     <script src="dist/js/custom.js"></script>
     <!-- ============================================================== -->
     <!-- This page plugins -->
@@ -246,19 +243,50 @@
 	<script type="text/javascript">
     function alertDismissed()
 	{
+	
 	}
 	let map, infoWindow;
-	
 	$(document).ready(function(){
 		$("#page_index").load("page_index.html");
 		document.getElementById('div_name').innerHTML=window.localStorage.getItem("name");
-		
 	});	
+	
+	// botão excluir manutenção clicado em folowups
+	function excluirManutencao(id)
+	{
+		$.post("http://tempustecnologia.com/sulife/controller/exec.maintenance.php",
+		{
+		  op: "EAPP",
+		  idmaintenance:  id
+		},
+		function(data,status){
+			if (data.trim()=='OK')
+			{
+				navigator.notification.alert(
+						'Deleted successfully.',  // message
+						alertDismissed,         // callback
+						'Success',            // title
+						'OK'                  // buttonName
+				);
+				getPage('followups',false)
+			}
+			else
+			{
+				navigator.notification.alert(
+						'Unable to delete.',  // message
+						alertDismissed,         // callback
+						'error',            // title
+						'OK'                  // buttonName
+				);				
+			}
+		});
+	}
+	
+	
 	
 	// botão register em NEW EMERGENCY CONTACT
 	function addEmergencyContact()
 	{
-		
 		$.post("http://tempustecnologia.com/sulife/controller/exec.emergencycontact.php",
 		{
 		  op: "IAPP",
@@ -272,7 +300,7 @@
 			if (data.trim()=='OK')
 			{
 				navigator.notification.alert(
-						'Cadastrado com sucesso.',  // message
+						'Added successfully.',  // message
 						alertDismissed,         // callback
 						'Success',            // title
 						'OK'                  // buttonName
@@ -281,7 +309,7 @@
 			else
 			{
 				navigator.notification.alert(
-						'Não foi possível cadastrar.',  // message
+						'Unable to add.',  // message
 						alertDismissed,         // callback
 						'error',            // title
 						'OK'                  // buttonName
@@ -304,7 +332,7 @@
 			if (data.trim()=='OK')
 			{
 				navigator.notification.alert(
-						'Cadastrado com sucesso.',  // message
+						'Added successfully.',  // message
 						alertDismissed,         // callback
 						'Success',            // title
 						'OK'                  // buttonName
@@ -314,7 +342,7 @@
 			else
 			{
 				navigator.notification.alert(
-						'Não foi possível cadastrar.',  // message
+						'Unable to add.',  // message
 						alertDismissed,         // callback
 						'error',            // title
 						'OK'                  // buttonName
@@ -339,7 +367,7 @@
 			if (data.trim()=='OK')
 			{
 				navigator.notification.alert(
-						'Alterado com sucesso.',  // message
+						'Successfully changed.',  // message
 						alertDismissed,         // callback
 						'Success',            // title
 						'OK'                  // buttonName
@@ -348,7 +376,7 @@
 			else
 			{
 				navigator.notification.alert(
-						'Não foi possível alterar.',  // message
+						'Could not change.',  // message
 						alertDismissed,         // callback
 						'error',            // title
 						'OK'                  // buttonName
@@ -369,7 +397,7 @@
 	
 	function getGalery()
 	{
-		$.post("http://tempustecnologia.com/sulife/controller/exec.news.php",
+		$.post("http://tempustecnologia.com/sulife/controller/exec.gallery.php",
 		{
 		  op: "LISTAPP",
 		  iduser: window.localStorage.getItem("name")
@@ -379,6 +407,17 @@
 		});
 	}
 	
+	function getGaleryPicture(idgallery)
+	{
+		$.post("http://tempustecnologia.com/sulife/controller/exec.gallery.php",
+		{
+		  op: "LISTPICTURES",
+		  idgallery: idgallery
+		},
+		function(data,status){
+			$("#div_gallery_pictures").html(data); 
+		});
+	}
 	
 	function getResidenceContactInfo()
 	{
@@ -440,7 +479,7 @@
 			if (data.trim()=='OK')
 			{
 				navigator.notification.alert(
-					'Excluído com sucesso.',  // message
+					'Successfully deleted.',  // message
 					alertDismissed,         // callback
 					'Success',            // title
 					'OK'                  // buttonName
@@ -451,7 +490,7 @@
 			else
 			{
 				navigator.notification.alert(
-				'Não foi possível excluir.',  // message
+				'Could not delete.',  // message
 						alertDismissed,         // callback
 						'Warning',            // title
 						'OK'                  // buttonName
@@ -470,7 +509,7 @@
 		}
 	}
 	
-	function getPage(p,closemenu)
+	function getPage(p,closemenu,valor)
 	{
 		//alert(p);
 		//alert(closemenu);
@@ -593,9 +632,6 @@
 					  lat: position.coords.latitude,
 					  lng: position.coords.longitude
 					};
-					//infoWindow.setPosition(pos);
-					//infoWindow.setContent("Location found.");
-					//infoWindow.open(map);
 					map.setCenter(pos);
 					map.addMarker({
 							lat: position.coords.latitude,
@@ -657,6 +693,12 @@
 			$("#page_index").load("page_gallery.html");
 			fechaMenu(closemenu);
 			getGalery();
+		}
+		if (p=='gallery_pictures')
+		{
+			$("#page_index").load("page_gallery_pictures.html");
+			fechaMenu(closemenu);
+			getGaleryPicture(valor);
 		}
 		if (p=='event')
 		{
@@ -770,12 +812,12 @@
 
 		function restoreState()
 		{
-				seconds = 6;
-				panic = false;
-				document.getElementById("btncounter").style.background = "#61233C";
-				document.getElementById("btncounter").innerHTML = "PANIC";
-				document.getElementById('seconds-counter').innerText = "";
-				clearInterval(cancel);
+			seconds = 6;
+			panic = false;
+			document.getElementById("btncounter").style.background = "#61233C";
+			document.getElementById("btncounter").innerHTML = "PANIC";
+			document.getElementById('seconds-counter').innerText = "";
+			clearInterval(cancel);
 		}
 		
 		
@@ -930,7 +972,7 @@
 					alert('get picture failed');
 				}, {
 				quality: 25,
-				saveToPhotoAlbum: true
+				saveToPhotoAlbum: true,
 				destinationType: navigator.camera.DestinationType.FILE_URI,
 			sourceType: navigator.camera.PictureSourceType.CAMERA
 			 });

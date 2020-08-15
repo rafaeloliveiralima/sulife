@@ -102,17 +102,17 @@
                     <div class="form-group ">
                         <div class="col-xs-12">
                             <h3>Recover Password</h3>
-                            <p class="text-muted">Enter your Email and instructions will be sent to you! </p>
+                            <p class="text-muted">Enter your Student Number and instructions will be sent to you! </p>
                         </div>
                     </div>
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <input class="form-control" type="text" required="" placeholder="Email">
+                            <input class="form-control" name='edtreenviarsenha' id='edtreenviarsenha' type="text" required="" style='color:black' placeholder="Student Number">
                         </div>
                     </div>
                     <div class="form-group text-center m-t-20">
                         <div class="col-xs-12">
-                            <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" style='border-width:0px;background-color:#61233C;' type="submit">Reset</button>
+                            <button id='btnenviarsenha' class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" style='border-width:0px;background-color:#61233C;' type="button">Reset</button>
                         </div>
                     </div>
                 </form>
@@ -149,7 +149,7 @@
                             <input class="form-control" name='edtphonenumber' id='edtphonenumber' type="text" required="" placeholder="Phone Number">
                         </div>
                     </div>
-                    <div class="form-group ">
+                    <div class="form-group">
                         <div class="col-xs-12">
                             <div id="div_residence"><input class="form-control" name='cmboxresidence' id='cmboxresidence' type="text" required="" placeholder="Residence"></div>
                         </div>
@@ -167,8 +167,8 @@
                     <div class="form-group row" style='color: white'>
                         <div class="col-md-12">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                <label class="custom-control-label" for="customCheck1">I agree to all <a href="javascript:void(0)" class="text-info">Terms</a></label> 
+                                <input id="chboxAgree" name='chboxAgree' type="checkbox" class="custom-control-input" value='S' >
+                                <label class="custom-control-label" for="chboxAgree">I agree to all <a onclick='abreTermo()' class="text-info">Terms</a></label> 
                             </div> 
                         </div>
                     </div>
@@ -187,13 +187,13 @@
         </div>
     </section>	
 	
-	<div class="app">
-					<!--<h1>Fauna JBRJ</h1>-->
+<!--	<div class="app">
 					<div id="deviceready" class="blink">
 						<p class="event listening">Conectando</p>
 						<p class="event received">Pronto para o uso</p>
 					</div>
 	</div>
+-->
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
@@ -211,10 +211,48 @@
         app.initialize();	
 		function alertDismissed()
 		{
+		
 		}
 		
 		$(document).ready(function(){
+		
+		  $("#btnenviarsenha").click(function(){
+		  
+			$.post("http://tempustecnologia.com/sulife/controller/exec.register.php",
+			{
+			  op: "REENVIARSENHA",
+			  edtreenviarsenha: document.getElementById('edtreenviarsenha').value
+			},
+			function(data,status){
+				if (data.trim()=='OK')
+				{
+					navigator.notification.alert(
+						'Message sent to registered email.',  // message
+						alertDismissed,         // callback
+						'Success',            // title
+						'OK'                  // buttonName
+					);				
+				}
+				else
+				{
+					navigator.notification.alert(
+						'Could not send email.',  // message
+						alertDismissed,         // callback
+						'Warning',            // title
+						'OK'                  // buttonName
+					);				
+				}
+			});
+		  });
+		  
+		  
+		
+		
 		  $("#btnenviar").click(function(){
+			
+			
+		  
+		  
 			$.post("http://tempustecnologia.com/sulife/controller/exec.register.php",
 			{
 			  op: "LOGINAPP",
@@ -247,16 +285,35 @@
 				else
 				{
 					navigator.notification.alert(
-						'Não foi possível efetuar o login.',  // message
+						'Could not log in.',  // message
 						alertDismissed,         // callback
 						'Warning',            // title
 						'OK'                  // buttonName
 					);				
 				}
 			});
+			
+			
+			
 		  });
 		  
+		  
+		  
+		  
 		   $("#btnregister").click(function(){
+			if (document.getElementById('chboxAgree').checked==false)
+			{
+				navigator.notification.alert(
+						'You need to agree the term.',  // message
+						alertDismissed,         // callback
+						'Warning',            // title
+						'OK'                  // buttonName
+					);	
+			
+			}
+			else
+			{
+		   
 			$.post("http://tempustecnologia.com/sulife/controller/exec.register.php",
 			{
 			  op: "IAPP",
@@ -266,13 +323,14 @@
 			  edtphonenumber: document.getElementById('edtphonenumber').value,
 			  cmboxresidence: document.getElementById('cmboxresidence').value,
 			  edtpassword: document.getElementById('edtpassword2').value,
-			  edtconfirmpassword: document.getElementById('edtconfirmpassword').value
+			  edtconfirmpassword: document.getElementById('edtconfirmpassword').value,
+			  chboxagree: document.getElementById('chboxAgree').value 
 			},
 			function(data,status){
 				if (data.trim()=='OK')
 				{
 					navigator.notification.alert(
-						'Cadastrado com sucesso.',  // message
+						'Registered successfully.',  // message
 						alertDismissed,         // callback
 						'Success',            // title
 						'OK'                  // buttonName
@@ -283,13 +341,14 @@
 				else
 				{
 					navigator.notification.alert(
-						'Não foi possível realizar o registro.',  // message
+						'Unable to register.',  // message
 						alertDismissed,         // callback
 						'Error',            // title
 						'OK'                  // buttonName
 					);	
 				}
 			});
+			}
 		  });
 		  
 		});
