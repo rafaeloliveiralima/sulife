@@ -251,10 +251,11 @@
 		document.getElementById('div_name').innerHTML=window.localStorage.getItem("name");
 	});	
 	
+	//
 	// botao excluir imagem manutenção
+	//
 	function excluirImagemManutencao(arquivo)
 	{
-		//alert(arquivo);
 		$.post("http://tempustecnologia.com/sulife/controller/exec.maintenance.php",
 		{
 		  op: "EARQUIVOAPP",
@@ -283,7 +284,10 @@
 		});
 	}
 	
+	//
 	// botão excluir manutenção clicado em folowups
+	//
+	
 	function excluirManutencao(id)
 	{
 		$.post("http://tempustecnologia.com/sulife/controller/exec.maintenance.php",
@@ -314,9 +318,9 @@
 		});
 	}
 	
-	
-	
+	//
 	// botão register em NEW EMERGENCY CONTACT
+	//
 	function addEmergencyContact()
 	{
 		$.post("http://tempustecnologia.com/sulife/controller/exec.emergencycontact.php",
@@ -351,6 +355,10 @@
 		});
 	};
 
+	//
+	// botão ADICIONAR NOVA MANUTENÇÃO
+	//
+	
 	function addMantenance()
 	{
 		
@@ -383,6 +391,11 @@
 			}
 		});
 	};
+	
+	//
+	// botão ATUALIZAR CONTA USUARIO
+	//
+	
 	
 	function updateSetttings()
 	{
@@ -417,6 +430,8 @@
 			}
 		});
 	}
+
+
 	
 	function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 		  infoWindow.setPosition(pos);
@@ -427,6 +442,11 @@
 		  );
 		infoWindow.open(map);
 	}
+	
+	
+	//
+	// MOSTRAR GALERIA 
+	//
 	
 	function getGalery()
 	{
@@ -439,6 +459,11 @@
 			$("#div_gallery").html(data); 
 		});
 	}
+
+	//
+	// MOSTRAR FOTOS DE UMA GALERIA 
+	//
+
 	
 	function getGaleryPicture(idgallery)
 	{
@@ -451,6 +476,11 @@
 			$("#div_gallery_pictures").html(data); 
 		});
 	}
+
+	//
+	// MOSTRAR CONTATO DA RESIDENCIA 
+	//
+
 	
 	function getResidenceContactInfo()
 	{
@@ -464,6 +494,11 @@
 		});
 	}
 
+	//
+	// MOSTRAR MANUTENÇÃO 
+	//
+	
+	
 	function getMaintenance()
 	{
 		$.post("http://tempustecnologia.com/sulife/view/followups.php",
@@ -475,6 +510,10 @@
 			$("#div_listamaintenance").html(data); 
 		});
 	}
+
+	//
+	// MOSTRAR CONTATOS DE EMERGENCIA 
+	//
 
 	
 	function getEmergencyContact()
@@ -489,6 +528,11 @@
 		});
 	}
 	
+	//
+	// MOSTRAR EVENTOS 
+	//
+	
+	
 	function getEvent()
 	{
 		$.post("http://tempustecnologia.com/sulife/controller/exec.event.php",
@@ -500,6 +544,11 @@
 			$("#div_event").html(data); 
 		});
 	}
+
+	//
+	// EXCLUIR CONTATO DE EMERGENCIA 
+	//
+
 	
 	function deleteEmergencyContact(id)
 	{
@@ -531,6 +580,11 @@
 			}
 		});
 	}
+
+
+	//
+	// FECHAR MENU 
+	//
 	
 	function fechaMenu(closemenu)
 	{
@@ -541,6 +595,11 @@
 			$(".nav-toggler i").addClass("ti-close");
 		}
 	}
+
+	//
+	// CARREGA PÁGINAS 
+	//
+
 	
 	function getPage(p,closemenu,valor)
 	{
@@ -1015,7 +1074,6 @@
 					alert('get picture failed');
 				}, {
 				quality: 25,
-				saveToPhotoAlbum: true,
 				destinationType: navigator.camera.DestinationType.FILE_URI,
 				sourceType: navigator.camera.PictureSourceType.CAMERA
 			 });
@@ -1052,6 +1110,7 @@
 	};
 		 	
 	function uploadPhoto(imageURI) {
+		/*
 		//alert(imageURI.substr(imageURI.lastIndexOf('/') + 1));
 		var options = new FileUploadOptions();
 		options.fileKey = "file";
@@ -1068,21 +1127,22 @@
 		var ft = new FileTransfer();
 		ft.onprogress = function(progressEvent) {
 			//alert(progressEvent.loaded);
-			var p =  Math.round((progressEvent.loaded / progressEvent.total)*100);
+			//var p =  Math.round((progressEvent.loaded / progressEvent.total)*100);
 			
-			var progress = '';
-			progress = '<div class="progress">';
-			progress +='<div class="progress-bar bg-success" role="progressbar" style="width: '+p+'%;height:15px;" role="progressbar"> '+p+'% </div>';
-			progress +='</div>';
-			document.getElementById('progressbarfollowups').innerHTML = progress;
+			//var progress = '';
+			//progress = '<div class="progress">';
+			//progress +='<div class="progress-bar bg-success" role="progressbar" style="width: '+p+'%;height:15px;" role="progressbar"> '+p+'% </div>';
+			//progress +='</div>';
+			//document.getElementById('progressbarfollowups').innerHTML = progress;
 			
 			//document.getElementById('btn_camera_'+document.getElementById('idpedidoparaatendimento').value+'').value = progressEvent.loaded;
-			/*if (progressEvent.lengthComputable) {
-				loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total)*100;
-			} else {
-				loadingStatus.increment();
-			}
-			*/
+			
+			//if (progressEvent.lengthComputable) {
+		//		loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total)*100;
+		//	} else {
+		//		loadingStatus.increment();
+		//	}
+			
 		};
 		//alert('imageURI:'+imageURI);
 		ft.upload(imageURI, "http://www.tempustecnologia.com/sulife/upload.php", function(result){
@@ -1106,6 +1166,8 @@
 				);
 			console.log(JSON.stringify(error));
 		}, options);
+		*/
+		
 	}	
 
 

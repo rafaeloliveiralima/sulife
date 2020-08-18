@@ -1110,6 +1110,7 @@
 	};
 		 	
 	function uploadPhoto(imageURI) {
+		/*
 		//alert(imageURI.substr(imageURI.lastIndexOf('/') + 1));
 		var options = new FileUploadOptions();
 		options.fileKey = "file";
@@ -1126,21 +1127,22 @@
 		var ft = new FileTransfer();
 		ft.onprogress = function(progressEvent) {
 			//alert(progressEvent.loaded);
-			var p =  Math.round((progressEvent.loaded / progressEvent.total)*100);
+			//var p =  Math.round((progressEvent.loaded / progressEvent.total)*100);
 			
-			var progress = '';
-			progress = '<div class="progress">';
-			progress +='<div class="progress-bar bg-success" role="progressbar" style="width: '+p+'%;height:15px;" role="progressbar"> '+p+'% </div>';
-			progress +='</div>';
-			document.getElementById('progressbarfollowups').innerHTML = progress;
+			//var progress = '';
+			//progress = '<div class="progress">';
+			//progress +='<div class="progress-bar bg-success" role="progressbar" style="width: '+p+'%;height:15px;" role="progressbar"> '+p+'% </div>';
+			//progress +='</div>';
+			//document.getElementById('progressbarfollowups').innerHTML = progress;
 			
 			//document.getElementById('btn_camera_'+document.getElementById('idpedidoparaatendimento').value+'').value = progressEvent.loaded;
-			/*if (progressEvent.lengthComputable) {
-				loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total)*100;
-			} else {
-				loadingStatus.increment();
-			}
-			*/
+			
+			//if (progressEvent.lengthComputable) {
+		//		loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total)*100;
+		//	} else {
+		//		loadingStatus.increment();
+		//	}
+			
 		};
 		//alert('imageURI:'+imageURI);
 		ft.upload(imageURI, "http://www.tempustecnologia.com/sulife/upload.php", function(result){
@@ -1164,6 +1166,8 @@
 				);
 			console.log(JSON.stringify(error));
 		}, options);
+		*/
+		
 	}	
 
 
