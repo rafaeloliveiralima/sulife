@@ -50,7 +50,20 @@ public class FileHelper {
      */
     @SuppressWarnings("deprecation")
     public static String getRealPath(Uri uri, CordovaInterface cordova) {
-        return FileHelper.getRealPathFromURI(cordova.getActivity(), uri);
+        String realPath = null;
+
+        if (Build.VERSION.SDK_INT < 11)
+            realPath = FileHelper.getRealPathFromURI_BelowAPI11(cordova.getActivity(), uri);
+
+        // SDK >= 11 && SDK < 19
+        else if (Build.VERSION.SDK_INT < 19)
+            realPath = FileHelper.getRealPathFromURI_API11to18(cordova.getActivity(), uri);
+
+        // SDK > 19 (Android 4.4)
+        else
+            realPath = FileHelper.getRealPathFromURI_API19(cordova.getActivity(), uri);
+
+        return realPath;
     }
 
     /**
@@ -66,9 +79,10 @@ public class FileHelper {
     }
 
     @SuppressLint("NewApi")
-    public static String getRealPathFromURI(final Context context, final Uri uri) {
+    public static String getRealPathFromURI_API19(final Context context, final Uri uri) {
+
         // DocumentProvider
-        if (DocumentsContract.isDocumentUri(context, uri)) {
+        if ( DocumentsContract.isDocumentUri(context, uri)) {
 
             // ExternalStorageProvider
             if (isExternalStorageDocument(uri)) {
@@ -86,21 +100,10 @@ public class FileHelper {
             else if (isDownloadsDocument(uri)) {
 
                 final String id = DocumentsContract.getDocumentId(uri);
-                if (id != null && id.length() > 0) {
-                    if (id.startsWith("raw:")) {
-                        return id.replaceFirst("raw:", "");
-                    }
-                    try {
-                        final Uri contentUri = ContentUris.withAppendedId(
-                                Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
 
-                        return getDataColumn(context, contentUri, null, null);
-                    } catch (NumberFormatException e) {
-                        return null;
-                    }
-                } else {
-                    return null;
-                }
+                return getDataColumn(context, contentUri, null, null);
             }
             // MediaProvider
             else if (isMediaDocument(uri)) {
@@ -140,6 +143,26 @@ public class FileHelper {
         }
 
         return null;
+    }
+
+    @SuppressLint("NewApi")
+    public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        String result = null;
+
+        try {
+            CursorLoader cursorLoader = new CursorLoader(context, contentUri, proj, null, null, null);
+            Cursor cursor = cursorLoader.loadInBackground();
+
+            if (cursor != null) {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                result = cursor.getString(column_index);
+            }
+        } catch (Exception e) {
+            result = null;
+        }
+        return result;
     }
 
     public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri) {
@@ -273,8 +296,6 @@ public class FileHelper {
                 final int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
             }
-        } catch (Exception e) {
-            return null;
         } finally {
             if (cursor != null)
                 cursor.close();
