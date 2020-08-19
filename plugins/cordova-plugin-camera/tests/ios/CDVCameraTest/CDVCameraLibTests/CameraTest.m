@@ -21,9 +21,6 @@
 #import <XCTest/XCTest.h>
 #import "CDVCamera.h"
 #import "UIImage+CropScaleOrientation.h"
-#import <Cordova/NSArray+Comparisons.h>
-#import <Cordova/NSData+Base64.h>
-#import <Cordova/NSDictionary+Extensions.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 
 
@@ -85,7 +82,7 @@
     XCTAssertEqual(options.usesGeolocation, NO);
     
     // Set each argument, check whether they are set. different from defaults
-    popoverOptions = @{ @"x" : @1, @"y" : @2, @"width" : @3, @"height" : @4 };
+    popoverOptions = @{ @"x" : @1, @"y" : @2, @"width" : @3, @"height" : @4, @"popoverWidth": @200, @"popoverHeight": @300 };
     
     args = @[
              @(49),
@@ -130,7 +127,7 @@
     
     // Souce is Camera, and image type
     
-    popoverOptions = @{ @"x" : @1, @"y" : @2, @"width" : @3, @"height" : @4 };
+    popoverOptions = @{ @"x" : @1, @"y" : @2, @"width" : @3, @"height" : @4, @"popoverWidth": @200, @"popoverHeight": @300 };
     args = @[
              @(49),
              @(DestinationTypeDataUrl),
@@ -291,12 +288,14 @@
     
     // test 640x480
     
-    targetSize = CGSizeMake(640, 480);
+    targetSize = CGSizeMake(480, 640);
     
     targetImage = [sourceImagePortrait imageByScalingNotCroppingForSize:targetSize];
     XCTAssertEqual(targetImage.size.width, targetSize.width);
     XCTAssertEqual(targetImage.size.height, targetSize.height);
-    
+
+    targetSize = CGSizeMake(640, 480);
+
     targetImage = [sourceImageLandscape imageByScalingNotCroppingForSize:targetSize];
     XCTAssertEqual(targetImage.size.width, targetSize.width);
     XCTAssertEqual(targetImage.size.height, targetSize.height);
@@ -304,24 +303,28 @@
     
     // test 800x600
     
-    targetSize = CGSizeMake(800, 600);
+    targetSize = CGSizeMake(600, 800);
     
     targetImage = [sourceImagePortrait imageByScalingNotCroppingForSize:targetSize];
     XCTAssertEqual(targetImage.size.width, targetSize.width);
     XCTAssertEqual(targetImage.size.height, targetSize.height);
     
+    targetSize = CGSizeMake(800, 600);
+
     targetImage = [sourceImageLandscape imageByScalingNotCroppingForSize:targetSize];
     XCTAssertEqual(targetImage.size.width, targetSize.width);
     XCTAssertEqual(targetImage.size.height, targetSize.height);
     
     // test 1024x768
     
-    targetSize = CGSizeMake(1024, 768);
+    targetSize = CGSizeMake(768, 1024);
     
     targetImage = [sourceImagePortrait imageByScalingNotCroppingForSize:targetSize];
     XCTAssertEqual(targetImage.size.width, targetSize.width);
     XCTAssertEqual(targetImage.size.height, targetSize.height);
     
+    targetSize = CGSizeMake(1024, 768);
+
     targetImage = [sourceImageLandscape imageByScalingNotCroppingForSize:targetSize];
     XCTAssertEqual(targetImage.size.width, targetSize.width);
     XCTAssertEqual(targetImage.size.height, targetSize.height);
